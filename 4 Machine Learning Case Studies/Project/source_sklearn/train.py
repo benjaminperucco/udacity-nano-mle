@@ -1,16 +1,10 @@
 from __future__ import print_function
-
 import argparse
 import os
 import pandas as pd
-
-# sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. 
-# from sklearn.externals import joblib
-# Import joblib package directly
 import joblib
-
-## TODO: Import any additional libraries you need to define a model
-
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import cross_val_score
 
 # Provided model load function
 def model_fn(model_dir):
@@ -25,8 +19,6 @@ def model_fn(model_dir):
     
     return model
 
-
-## TODO: Complete the main code
 if __name__ == '__main__':
     
     # All of the model parameters and training parameters are sent as arguments
@@ -41,7 +33,8 @@ if __name__ == '__main__':
     parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'])
     parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAIN'])
     
-    ## TODO: Add any additional arguments that you will need to pass into your model
+    # hyperparameters for scikit-learn model
+    parser.add_argument('--param_cv', type=int, default=5) # cross validation fold
     
     # args holds all passed-in arguments
     args = parser.parse_args()
@@ -54,20 +47,18 @@ if __name__ == '__main__':
     train_y = train_data.iloc[:,0]
     train_x = train_data.iloc[:,1:]
     
+    # scikit-learn usual model definition
+    clf = GaussianNB()
     
-    ## --- Your code here --- ##
+    # calculate accuracy based on cross validation
+    accuracy_scores = cross_val_score(clf, train_x, train_y, cv=args.param_cv)
     
-
-    ## TODO: Define a model 
-    model = None
+    # fit on full training data
+    clf.fit(train_x, train_y)
     
-    
-    ## TODO: Train the model
-    
-    
-    
-    ## --- End of your code  --- ##
-    
+    # print out accuracy from cross validation
+    print('use {}-fold cross validation score'.format(args.param_cv))
+    print('accuracy: {}'.format(accuracy_scores.mean()))
 
     # Save the trained model
-    joblib.dump(model, os.path.join(args.model_dir, "model.joblib"))
+    joblib.dump(clf, os.path.join(args.model_dir, "model.joblib"))
