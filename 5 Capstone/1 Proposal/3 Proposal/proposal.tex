@@ -1,32 +1,24 @@
 \documentclass[a4paper]{article}
 \usepackage{graphicx}
 \usepackage[left = 3cm, right = 2cm, top = 2cm, bottom = 2cm]{geometry}
-%\usepackage[german]{babel}
 \usepackage{makecell}
 \usepackage{booktabs}
 \usepackage[justification=centering]{caption}
 
 \begin{document}
 
-\title{{\large Udacity Nanodegree\\Machine Learning Engineer}\\[1.5cm]Fake News Detector}
-\author{\\[1.5cm]Benjamin Perucco\\Lingwurmstrasse 68, 3900 Brig\\benjamin.perucco@gmail.com}
-\date{December 30, 2020} 
-\maketitle
-\thispagestyle{empty}
-
-% --------------------------------------------------
-% ToC
-% --------------------------------------------------
-\newpage
-\tableofcontents
-\thispagestyle{empty}
-\newpage
-
 \section{Domain Background}
+
+Our world is highly interconnected and it is paramount that citizens are informed objectively about issues that influence and shape our world like geopolitics or climate change. The internet lead to a rise of news media to report on these stories putting traditional media under pressure. The vast amount of (online) news articles available give rise to a new phenomenon called fake news. Fake news is false or misleading information presented as news and can reduce the impact of real news \cite{bib:fakenews}.
 
 \section{Problem Statement}
 
+How can fake news be distingiushed from reliable, trustworthy information? In the following capstone project a machine learning model shall be developed whose aim is to detect fake news.
+
 \section{Datasets and Inputs}
+
+Articles classified as fake and real news are needed in order to develop and train such a machine learning model. Data is taken from kaggle \cite{bib:kaggle} and corresponds to the ISOT fake news detection datasets \cite{bib:isot}. 
+
 
 \section{Solution Statement}
 
@@ -37,5 +29,11 @@
 \section{Project Design}
 
 From sci-kit learn; Naive Bayes (NB), k Nearest Neighbor (kNN), Gradient Boosting (GB), Multi-Layer Perceptron (MLP)
+
+\begin{thebibliography}{9}
+\bibitem{bib:fakenews} Fake news., (2020, December 22), wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
+\bibitem{bib:kaggle} Fake and real news dataset, (2020, December 22), kaggle.com, \\\texttt{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}
+\bibitem{bib:isot} ISOT fake news detection datasets, (2020, December 22), University of Victoria, \\\texttt{https://www.uvic.ca/engineering/ece/isot/datasets/fake-news/index.php}
+\end{thebibliography}
 
 \end{document}
