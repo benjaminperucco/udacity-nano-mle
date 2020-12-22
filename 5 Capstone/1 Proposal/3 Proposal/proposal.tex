@@ -1,39 +1,66 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper,12pt,nottoc]{article}
 \usepackage{graphicx}
 \usepackage[left = 3cm, right = 2cm, top = 2cm, bottom = 2cm]{geometry}
 \usepackage{makecell}
 \usepackage{booktabs}
 \usepackage[justification=centering]{caption}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tocbibind}
 
 \begin{document}
 
-\section{Domain Background}
+\section*{Domain Background}
 
-Our world is highly interconnected and it is paramount that citizens are informed objectively about issues that influence and shape our world like geopolitics or climate change. The internet lead to a rise of news media to report on these stories putting traditional media under pressure. The vast amount of (online) news articles available give rise to a new phenomenon called fake news. Fake news is false or misleading information presented as news and can reduce the impact of real news \cite{bib:fakenews}.
+Our world is highly interconnected and it is paramount that citizens are informed objectively about issues that influence and shape our world like geopolitics or climate change. The internet lead to a rise of news media (e.g. social media, news portal, etc.) to report on these stories. The vast amount of (online) articles available give rise to a new phenomenon called fake news. Fake news is false or misleading information presented as news and can reduce the impact of real news \cite{bib:fakenews}.
 
-\section{Problem Statement}
+\section*{Problem Statement}
 
-How can fake news be distingiushed from reliable, trustworthy information? In the following capstone project a machine learning model shall be developed whose aim is to detect fake news.
+How can fake news be distingiushed from reliable and trustworthy information? In the following capstone project a machine learning model shall be developed whose aim is to detect fake news. The underlying problem is to bring words and sentences into a mathematical representation for machine learning.
 
-\section{Datasets and Inputs}
+\section*{Datasets and Inputs}
 
-Articles classified as fake and real news are needed in order to develop and train such a machine learning model. Data is taken from kaggle \cite{bib:kaggle} and corresponds to the ISOT fake news detection datasets \cite{bib:isot}. 
+Articles classified as fake and real news are needed in order to train machine learning models. Such a dataset is taken from kaggle \cite{bib:kaggle} and was collected from real world sources. Truthful articles were obtained from Reuters and fake news articles were gathered from unreliable websites that were flagged by Politifact which is a fact-checking organization. These datasets contain different types of articles on different topics, the majority of articles focus on political and world news topics \cite{bib:isot}, \cite{bib:ahmed-2018}, \cite{bib:ahmed-2017}. There are about 21,417 real news articles and about 23,481 fake news articles in the dataset. Furthermore the data consists of four columns: title, text, subject and date.
 
+\section*{Solution Statement}
 
-\section{Solution Statement}
+Natural language processing (NLP) models are used to bring words and sentences into a mathematical representation. Often applied is the n-gram model which is a contiguous sequence of items with length $n$ (such as words or characters) to be analyzed. Based on the n-gram model features can be extracted as discussed by Ahmet et al. \cite{bib:ahmed-2018}:
+ 
+ \begin{itemize}
+\item{Term frequency (TF): TF defines the number of times a words appears in a document with respect to the total words in the document.}
+\item{Term frequency-inverted document frequency (TF-IDF): TF-IDF is a statistical metric used to measure how important a termin is to a document in a set of documents.}
+\end{itemize}
 
-\section{Benchmark Model}
+\section*{Benchmark Model}
 
-\section{Evaluation Metrics}
+Ahmet et al. \cite{bib:ahmed-2017} achieved an accuracy of 92 \% when a linear support vector machine (LSVM) combined with 1-gram model and a 50,000 top feature selection TF-IDF method was used.
 
-\section{Project Design}
+\section*{Evaluation Metrics}
 
-From sci-kit learn; Naive Bayes (NB), k Nearest Neighbor (kNN), Gradient Boosting (GB), Multi-Layer Perceptron (MLP)
+The recommended evaluation metric for this formulated problem is accuracy which means how many labels are correctly classified (either as fake or real news) in respect to all classified labels.
+
+\section*{Project Design}
+
+Machine learning models are developed on AWS SageMaker \cite{bib:sagemaker}. The following project design shall be applied:
+
+\begin{itemize}
+\item{Article exploration: The nature of the articles is investigated and a text processing strategy is derived.}
+\item{Text processing: Articles need to be processed with respect to formation, stop word removal, stemming, etc.}
+\item{Feature extraction: Vocabulary dictionaries and n-gram models are built to extract features with techniques such as TF and TF-IDF.}
+\item{Data preparation: Training, test and validation data for the machine learning models are prepared.}
+\item{Modeling: Four machine learning models are evaluated sourcing from different frameworks such as: support vector machine (SVM) from scikit-learn, linear learner (LL) and xgboost (XGB) from SageMaker built-in models and recurrent neural network (RNN) from PyTorch.}
+\item{Tuning and validation: The test data is used to tune the machine learning hyperparameters and the validation data is used to evaluate the final metrics and to determine the best modeling strategy.}
+\end{itemize}
 
 \begin{thebibliography}{9}
-\bibitem{bib:fakenews} Fake news., (2020, December 22), wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
+\bibitem{bib:fakenews} Fake news, (2020, December 22), wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
 \bibitem{bib:kaggle} Fake and real news dataset, (2020, December 22), kaggle.com, \\\texttt{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}
-\bibitem{bib:isot} ISOT fake news detection datasets, (2020, December 22), University of Victoria, \\\texttt{https://www.uvic.ca/engineering/ece/isot/datasets/fake-news/index.php}
+\bibitem{bib:isot} ISOT fake news detection datasets, (2020, December 22), University of Victoria, \texttt{https://www.uvic.ca/engineering/ece/isot/datasets/fake-news/index.php}
+\bibitem{bib:ahmed-2018} Ahmed, H, Traore, I, Saad, S. Detecting opinion spams and fake news using text classification, Security and Privacy, 2018, \texttt{https://doi.org/10.1001/spy2.9}
+\bibitem{bib:ahmed-2017} Ahmed H., Traore I., Saad S. (2017) Detection of Online Fake News Using N-Gram Analysis and Machine Learning Techniques. In: Traore I., Woungang I., Awad A. (eds) Intelligent, Secure, and Dependable Systems in Distributed and Cloud Environments. ISDDC 2017. Lecture Notes in Computer Science, vol 10618. Springer, Cham. \texttt{https://doi.org/10.1007/978-3-319-69155-8\_9}
+\bibitem{bib:sagemaker} Amazon SageMaker, (2020, December 22), amazon.com, \\\texttt{https://aws.amazon.com/sagemaker/}
 \end{thebibliography}
 
 \end{document}
