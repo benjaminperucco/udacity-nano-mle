@@ -12,8 +12,7 @@
 # ------------------------------------------------------------------------------
 import time
 import numpy as np
-from kaggle.api.kaggle_api_extended import KaggleApi
-from zipfile import ZipFile
+from helper import import_kaggle_data
 
 # ------------------------------------------------------------------------------
 # User parameter
@@ -23,19 +22,7 @@ data_set = 'gift_costs.txt'
 # ------------------------------------------------------------------------------
 # Download and read file
 # ------------------------------------------------------------------------------
-print('Download {} from kaggle.com...'.format(data_set), end='')
-api = KaggleApi()
-api.authenticate()
-api.dataset_download_file(
-    dataset='benjaminperucco/udacitydata',
-    file_name=data_set,
-    force=True
-)
-zf = ZipFile(data_set + '.zip')
-zf.extractall()
-zf.close()
-print('done')
-
+import_kaggle_data(data_set=data_set, extract_zip=True)
 with open(data_set) as f:
     gift_costs = f.read().split('\n')
 
