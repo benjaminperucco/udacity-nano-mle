@@ -1,6 +1,6 @@
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Optimizing code: Holiday gifts
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # In the last example, you learned that using vectorized operations and more
 # efficient data structures can optimize your code. Let's use these tips for
 # one more example. Say your online gift store has one million users that each
@@ -9,31 +9,44 @@
 # customer their wish list gift for free if it is under 25 dollars. Now, you
 # want to calculate the total cost of all gifts under 25 dollars to see how
 # much you'd spend on free gifts. Here's one way you could've done it.
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 import time
 import numpy as np
+from kaggle.api.kaggle_api_extended import KaggleApi
+from zipfile import ZipFile
 
-# -----------------------------------------------------------------------------
-# Define user parameters
-# -----------------------------------------------------------------------------
-root_path = 'C:/Users/Benjamin/Development/' \
-            + 'Nanodegree Machine Learning Engineer/' \
-            + '2 Software Engineering Fundamentals'
+# ------------------------------------------------------------------------------
+# User parameter
+# ------------------------------------------------------------------------------
+data_set = 'gift_costs.txt'
 
-# -----------------------------------------------------------------------------
-# Read file
-# -----------------------------------------------------------------------------
-with open(root_path + '/Data/gift_costs.txt') as f:
+# ------------------------------------------------------------------------------
+# Download and read file
+# ------------------------------------------------------------------------------
+print('Download {} from kaggle.com...'.format(data_set), end='')
+api = KaggleApi()
+api.authenticate()
+api.dataset_download_file(
+    dataset='benjaminperucco/udacitydata',
+    file_name=data_set,
+    force=True
+)
+zf = ZipFile(data_set + '.zip')
+zf.extractall()
+zf.close()
+print('done')
+
+with open(data_set) as f:
     gift_costs = f.read().split('\n')
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Convert to integer array
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 gift_costs = np.array(gift_costs).astype(int) # convert string to int
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Run inadequate solution
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 start = time.time()
 total_price = 0
 for cost in gift_costs:
@@ -43,7 +56,7 @@ for cost in gift_costs:
 print('Total price: {}'.format(total_price))
 print('Duration: {} seconds\n'.format(time.time() - start))
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Here you iterate through each cost in the list, and check if it's less than
 # 25. If so, you add the cost to the total price after tax. This works, but
 # there is a much faster way to do this. Can you refactor this to run under
@@ -52,7 +65,7 @@ print('Duration: {} seconds\n'.format(time.time() - start))
 # Using numpy makes it very easy to select all the elements in an array that
 # meet a certain condition, and then perform operations on them together all at
 # once. You can them find the sum of what those values end.
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 start = time.time()
 total_price = gift_costs[np.where(gift_costs < 25)].sum() * 1.08
 
