@@ -1,0 +1,5 @@
+Link to report template:
+https://github.com/udacity/machine-learning/blob/master/projects/capstone/capstone_report_template.md
+
+Link to submitted proposal:
+https://review.udacity.com/#!/reviews/2654814
