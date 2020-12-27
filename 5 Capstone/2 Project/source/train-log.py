@@ -3,12 +3,16 @@ import argparse
 import joblib
 import os
 import pandas as pd
-from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
+    
+    # hyperparameters for scikit-learn model
+    parser.add_argument('--param_kernel', type=str, default='rbf') # kernel
+    parser.add_argument('--param_C', type=int, default=1) # regularization parameter
     
     # SageMaker specific arguments. defaults are set in the environment variables.
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
@@ -49,7 +53,7 @@ if __name__ == '__main__':
     test_X = test_data.iloc[:, 1:]
 
     # scikit-learn usual model definition
-    clf = GaussianNB()
+    clf = LogisticRegression(random_state = 1, max_iter = 1000)
     
     # model fit
     clf.fit(train_X, train_y)
