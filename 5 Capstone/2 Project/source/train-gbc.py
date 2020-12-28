@@ -11,8 +11,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # hyperparameters for scikit-learn model
-    parser.add_argument('--param_kernel', type=int, default='rbf') # kernel
-    parser.add_argument('--param_C', type=int, default=1) # regularization parameter
+    parser.add_argument('--param_learning_rate', type=float, default=0.1) # learning rate shrinks the contribution of each tree    
+    parser.add_argument('--param_n_estimators', type=int, default=100) # the number of boosting stages to perform
+    parser.add_argument('--param_random_state', type=int, default=1) # controls the random seed given
+    parser.add_argument('--param_max_depth', type=int, default=3) # the maximum depth of the individual regression estimators
     
     # SageMaker specific arguments. defaults are set in the environment variables.
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
@@ -53,7 +55,12 @@ if __name__ == '__main__':
     test_X = test_data.iloc[:, 1:]
 
     # scikit-learn usual model definition
-    clf = GradientBoostingClassifier(learning_rate=0.1, n_estimators=100, min_impurity_decrease, random_state=1)
+    clf = GradientBoostingClassifier(
+        learning_rate=args.param_learning_rate, 
+        n_estimators=args.param_n_estimators, 
+        random_state=args.param_random_state,
+        max_depth=args.param_max_depth
+    )
     
     # model fit
     clf.fit(train_X, train_y)

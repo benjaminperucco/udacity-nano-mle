@@ -3,6 +3,7 @@ import argparse
 import joblib
 import os
 import pandas as pd
+import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 
@@ -11,18 +12,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # hyperparameters for scikit-learn model
-    parser.add_argument('--param_random_state', type=int, default=1)
-    parser.add_argument('--param_max_iter', type=int, default=1)
-    parser.add_argument('--param_penalty', type=int, default=1)
-    parser.add_argument('--param_penalty', type=int, default=1)
-        parser.add_argument('--param_penalty', type=int, default=1)
-        
-    parser.add_argument('--param_learning_rate_init', type=int, default=1)
-    
-    penalty='l2', *, dual=False, tol=0.0001, C=1.0, fit_intercept=rue, intercept_scaling=1, class_weight=None, random_state=None, solver='lbfgs', max_iter=100, multi_class='auto', verbose=0, warm_start=False, n_jobs=None, l1_ratio=None
-    
-    parser.add_argument('--param_kernel', type=int, default='rbf') # kernel
-    parser.add_argument('--param_C', type=int, default=1) # regularization parameter
+    parser.add_argument('--param_hidden_layer_size', type=int, default=1) # hidden layer size, if 1 only start neurons are taken
+    parser.add_argument('--param_start_hidden_layer', type=int, default=100) # number of neurons to start
+    parser.add_argument('--param_end_hidden_layer', type=int, default=10) # number of neurons to end
+    parser.add_argument('--param_learning_rate', type=float, default=0.001) # the initial learning rate used
+    parser.add_argument('--param_random_state', type=int, default=1) # determines random number generation
+    parser.add_argument('--param_max_iter', type=int, default=200) # maximum number of iterations
+    parser.add_argument('--param_activation', type=str, default='relu') # activation function for the hidden layer
     
     # SageMaker specific arguments. defaults are set in the environment variables.
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
@@ -61,10 +57,25 @@ if __name__ == '__main__':
     # labels are in the first column, features in rest columnsd
     test_y = test_data.iloc[:, 0]
     test_X = test_data.iloc[:, 1:]
+    
+    # calculate hidden layer vector
+    if args.param_hidden_layer_size > 1:
+        hl_list = np.linspace(args.param_start_hidden_layer, args.param_end_hidden_layer, num=args.param_hidden_layer_size).round()
+    else
+        hl_list = args.param_start_hidden_layer
+    
+    # argument must be tuple
+    hl_tuple = tuple(hl_list)
 
     # scikit-learn usual model definition
-    clf = GradientBoostingClassifier(learning_rate=0.1, n_estimators=100, min_impurity_decrease, random_state=1)
-    
+    clf = MLPClassifier(
+        learning_rate_init=args.param_learning_rate, 
+        random_state=args.random_state,
+        max_iter=args.param_max_iter,
+        hidden_layer_sizes=hl_tuple,
+        activation=args.activation
+    )
+        
     # model fit
     clf.fit(train_X, train_y)
     

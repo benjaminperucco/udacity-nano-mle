@@ -11,8 +11,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     
     # hyperparameters for scikit-learn model
-    parser.add_argument('--param_kernel', type=str, default='rbf') # kernel
-    parser.add_argument('--param_C', type=int, default=1) # regularization parameter
+    parser.add_argument('--param_max_iter', type=int, default=100) # maximum number of iterations
+    parser.add_argument('--param_C', type=float, default=1.0) # inverse of regularization strength
     
     # SageMaker specific arguments. defaults are set in the environment variables.
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
@@ -53,7 +53,10 @@ if __name__ == '__main__':
     test_X = test_data.iloc[:, 1:]
 
     # scikit-learn usual model definition
-    clf = LogisticRegression(random_state = 1, max_iter = 1000)
+    clf = LogisticRegression(
+        C=args.param_C, 
+        max_iter=args.param_max_iter
+    )
     
     # model fit
     clf.fit(train_X, train_y)

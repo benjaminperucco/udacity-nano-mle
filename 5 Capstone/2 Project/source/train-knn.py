@@ -11,9 +11,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # hyperparameters for scikit-learn model
-    parser.add_argument('--param_n_neighbors', type=int, default=5) # cross validation fold
-    parser.add_argument('--param_weight', type=str, default='uniform') # cross validation fold
-    parser.add_argument('--param_p', type=int, default=2) # cross validation fold
+    parser.add_argument('--param_n_neighbors', type=int, default=5) # number of neighbors
+    parser.add_argument('--param_weight', type=str, default='uniform') # weight function
+    parser.add_argument('--param_p', type=int, default=2) # power parameter for the Minkowski metric
     
     # SageMaker specific arguments. defaults are set in the environment variables.
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
@@ -54,7 +54,11 @@ if __name__ == '__main__':
     test_X = test_data.iloc[:, 1:]
 
     # scikit-learn usual model definition
-    clf = KNeighborsClassifier(n_neighbors=args.param_n_neighbors, weights=args.param_weight, p=args.param_p)
+    clf = KNeighborsClassifier(
+        n_neighbors=args.param_n_neighbors, 
+        weights=args.param_weight, 
+        p=args.param_p
+    )
     
     # model fit
     clf.fit(train_X, train_y)

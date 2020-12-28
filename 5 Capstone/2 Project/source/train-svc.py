@@ -11,8 +11,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # hyperparameters for scikit-learn model
-    parser.add_argument('--param_kernel', type=str, default='rbf') # kernel
-    parser.add_argument('--param_C', type=int, default=1) # regularization parameter
+    parser.add_argument('--param_kernel', type=str, default='poly') # kernel
+    parser.add_argument('--param_C', type=float, default=1.0) # regularization parameter
+    parser.add_argument('--param_degree', type=int, default=3) # degree of the polynomial kernel
+    parser.add_argument('--param_random_state', type=int, default=1) # random state
     
     # SageMaker specific arguments. defaults are set in the environment variables.
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
@@ -53,7 +55,12 @@ if __name__ == '__main__':
     test_X = test_data.iloc[:, 1:]
 
     # scikit-learn usual model definition
-    clf = SVC(C=args.param_C, kernel=args.param_kernel)
+    clf = SVC(
+        C=args.param_C,
+        kernel=args.param_kernel,
+        degree=args.degree,
+        random_state=args.random_state
+    )
     
     # model fit
     clf.fit(train_X, train_y)
