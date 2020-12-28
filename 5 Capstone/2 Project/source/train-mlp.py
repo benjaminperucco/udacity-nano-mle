@@ -60,8 +60,8 @@ if __name__ == '__main__':
     
     # calculate hidden layer vector
     if args.param_hidden_layer_size > 1:
-        hl_list = np.linspace(args.param_start_hidden_layer, args.param_end_hidden_layer, num=args.param_hidden_layer_size).round()
-    else
+        hl_list = np.linspace(args.param_start_hidden_layer, args.param_end_hidden_layer, num=args.param_hidden_layer_size).astype(int)
+    else:
         hl_list = args.param_start_hidden_layer
     
     # argument must be tuple
@@ -70,10 +70,10 @@ if __name__ == '__main__':
     # scikit-learn usual model definition
     clf = MLPClassifier(
         learning_rate_init=args.param_learning_rate, 
-        random_state=args.random_state,
+        random_state=args.param_random_state,
         max_iter=args.param_max_iter,
         hidden_layer_sizes=hl_tuple,
-        activation=args.activation
+        activation=args.param_activation
     )
         
     # model fit

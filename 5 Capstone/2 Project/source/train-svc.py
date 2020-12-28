@@ -58,8 +58,8 @@ if __name__ == '__main__':
     clf = SVC(
         C=args.param_C,
         kernel=args.param_kernel,
-        degree=args.degree,
-        random_state=args.random_state
+        degree=args.param_degree,
+        random_state=args.param_random_state
     )
     
     # model fit
