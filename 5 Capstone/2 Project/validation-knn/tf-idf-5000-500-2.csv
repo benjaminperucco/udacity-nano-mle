@@ -1,0 +1,2 @@
+data,validation_accuracy,test_accuracy
+tf-idf-5000-500-2,0.775178026449644,0.7951070336391437
