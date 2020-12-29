@@ -1,0 +1,2 @@
+data,max_depth,random_state,n_estimators,learning_rate
+tf-5000-1000-2,8,1,918,0.16883332910860827
