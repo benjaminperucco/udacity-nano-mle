@@ -25,9 +25,9 @@
 
 \section{Analysis}
 
-\subsection{Data Exploration}
-
 \subsection{Algorithms and Techniques}
+
+The news articles must be converted into a structured, mathematical representation in order to apply machine learning techniques. The following chapters disucss how we can convert text into numerical features.
 
 \subsubsection{n-gram Model}
 
@@ -43,10 +43,10 @@ Consider a corpus $D$ which contains a set of documents $\{d_1, d_2, d_3, ..., d
 
 \subsubsection{Definitions}
 
-Let $\sigma(f_j, d_i)$ the number of occurances of feature $f_j$ in document $d_i$. Then we can build a feature matrix
+Let $\sigma(f_j, d_i)$ the number of occurances of feature $f_j$ in document $d_i$. Then we can build a feature matrix $X$, where
 
 \begin{gather}
-X_{\sigma} =
+X =
 \begin{bmatrix}
 \sigma(f_1, d_1) & \sigma(f_2, d_1) & \sigma(f_3, d_1) & ... & \sigma(f_m, d_1) \\
 \sigma(f_1, d_2) & \sigma(f_2, d_2) & \sigma(f_3, d_2) & ... & \sigma(f_m, d_2) \\
@@ -56,11 +56,29 @@ X_{\sigma} =
 \end{bmatrix}.
 \end{gather}
 
-\noindent For a specific element in row $i$ and column $j$ (representing the document $d_i$ and feature $f_j$) in the matrix $X_{\sigma}$, we abbreviate by using $\sigma_{ij}$.
+\noindent For a specific element in row $i$ and column $j$ (representing the document $d_i$ and feature $f_j$) in the matrix $X$, we abbreviate by using $\sigma_{ij}$.
 
 \subsubsection{Term Frequency Model}
 
+Matrix $X$ could be already used for machine learning, but in the term frequency model, matrix $X$ is normalized to matrix $\hat{X}$, where an element $\hat{\sigma}_{ij}$ is
+
+\begin{gather}
+\hat{\sigma}_{ij} = \frac{\sigma_{ij}}{\sum_{j=1}^{m}\sigma_{ij}}.
+\end{gather}
+
+\noindent Or spoken in plain language: the number of occurances of a token $f_j$ in a document $d_i$ is divided by the total number of occurances of all tokens $\{f_1, f_2, f_3, ..., f_m\}$ in the same document $d_i$. So we have a representation where the importance of each feature can be compared to other features in each document. 
+
 \subsubsection{Inverse Document Frequency Model}
+
+The inverse document frequency model is used to define the feature importance not just in a document $d_i$ but compared within a corpus $D$. We introduce a matrix $Y$, where an element $\delta_{ij}$ is 1 if $\hat{\sigma}_{ij} > 0$. An inverse normalization step is performed on the matrix $Y$ resulting in a vector $\hat{y}$, where an element $\hat{\delta}_{j}$ is
+
+\begin{gather}\label{eq:idf}
+\hat{\delta}_{j} = 1 + \textrm{log}\left[\frac{|D|}{\sum_{i=1}^{n}\delta_{ij}}\right].
+\end{gather}
+
+\noindent Or spoken in plain language: in a corpus $D$ which comprises of a set of documents $\{d_1, d_2, d_3, ..., d_n\}$, we count in how many documents the feature $f_j$ appears. This number is used to divide the number of documents $|D|$ in a corpus $D$. Consider two examples: if a feature $f_j$ occurs in each document $\{d_1, d_2, d_3, ..., d_n\}$, we divide the number of documents $|D|$ in a corpus $D$ by the same number. So expression \ref{eq:idf} results in $1$, weighting feature $f_j$ as $1$. On the other hand, if a feature $f_j$ occurs only in one document, expression \ref{eq:idf} produces a much larger number, increasing the weight of feature $f_j$ in the corpus $D$.
+
+\subsection{Data Exploration}
 
 \subsection{Benchmark}
 
