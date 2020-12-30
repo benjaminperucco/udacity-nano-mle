@@ -1,0 +1,2 @@
+data,activation,hidden_layer_sizes,max_iter,random_state,learning_rate_init
+tf-5000-5000-1,identity,"(793, 401, 10)",2396,1,0.011201574727425518

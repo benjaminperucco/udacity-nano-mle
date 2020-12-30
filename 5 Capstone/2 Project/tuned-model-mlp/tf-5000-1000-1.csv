@@ -1,0 +1,2 @@
+data,activation,hidden_layer_sizes,max_iter,random_state,learning_rate_init
+tf-5000-1000-1,logistic,"(489, 17)",1098,1,0.003318063049448306

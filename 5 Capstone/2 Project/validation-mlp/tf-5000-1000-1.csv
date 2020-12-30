@@ -1,0 +1,2 @@
+data,validation_accuracy,test_accuracy
+tf-5000-1000-1,0.9593082400813835,0.9592252803261978
