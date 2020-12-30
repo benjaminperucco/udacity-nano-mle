@@ -9,6 +9,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{tocbibind}
+\usepackage{amsmath}
 
 \begin{document}
 
@@ -29,6 +30,33 @@
 \subsection{Algorithms and Techniques}
 
 \subsubsection{n-gram Model}
+
+The $n$-gram defines usually a contiguous sequence of words with length $n$. For example, if $n = 1$, we speak of a unigram that contains only single word tokens. Or if $n = 2$, we denote this as a bigram that is build on two adjacent word tokens.\\
+
+\noindent Consider the following text: ``Sometimes we eat green apples, and sometimes, the apples we eat are red.'' Based on a unigram, we obtain a set of tokens: $\{$'sometimes', `we', `eat', `apples', `green', `and', `the', `are', `red'$\}$. We can derive a frequency array of tokens in the text: [2, 2, 2, 2, 1, 1, 1, 1, 1]. For the bigram, another set of tokens is obtained: $\{$'sometimes we', `we eat', `eat green', `green apples', `apples and', `and sometimes', `sometimes the', `the apples', `apples we', `eat are', `are red'$\}$. The corresponding frequency array of tokens in the text is: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].\\
+
+\noindent In order to build frequency arrays for a set of texts (or documents), we need to build a common vocabulary of which the $n$-gram model is underlying principle.
+
+\subsubsection{Vocabulary}
+
+Consider a corpus $D$ which contains a set of documents $\{d_1, d_2, d_3, ..., d_n\}$. Then a vocubulary $F$ is a set of tokens $\{f_1, f_2, f_3, ..., f_m\}$ extracted from the corpus $D$. Please remind yourself that a token is created on the n-gram model. Usually for a set of tokens, we consider the $m$ mostly occuring tokens in a corpus $D$. In the following, the tokens are denoted as features as these build the features (or independent variables) of a machine learning model.\\
+
+\subsubsection{Definitions}
+
+Let $\sigma(f_j, d_i)$ the number of occurances of feature $f_j$ in document $d_i$. Then we can build a feature matrix
+
+\begin{gather}
+X_{\sigma} =
+\begin{bmatrix}
+\sigma(f_1, d_1) & \sigma(f_2, d_1) & \sigma(f_3, d_1) & ... & \sigma(f_m, d_1) \\
+\sigma(f_1, d_2) & \sigma(f_2, d_2) & \sigma(f_3, d_2) & ... & \sigma(f_m, d_2) \\
+\sigma(f_1, d_3) & \sigma(f_2, d_3) & \sigma(f_3, d_3) & ... & \sigma(f_m, d_3) \\
+... & ... & ... & ... & ... & \\
+ \sigma(f_1, d_n) & \sigma(f_2, d_n) & \sigma(f_3, d_n) & ... & \sigma(f_m, d_n)
+\end{bmatrix}.
+\end{gather}
+
+\noindent For a specific element in row $i$ and column $j$ (representing the document $d_i$ and feature $f_j$) in the matrix $X_{\sigma}$, we abbreviate by using $\sigma_{ij}$.
 
 \subsubsection{Term Frequency Model}
 
