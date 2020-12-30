@@ -19,15 +19,49 @@
 
 \subsection{Project Overview}
 
+Our world is highly interconnected and it is of paramount importance that citizens are informed objectively about issues that influence and shape our world (like issues on geopolitics or climate change). The internet lead to a rise of news media (e.g. social media, news portals, etc.) to report on these stories. The vast amount of (online) articles available yield a new phenomenon called fake news. Fake news is false or misleading information presented as news and can reduce the impact of real news \cite{bib:fakenews}. 
+
 \subsection{Problem Statement}
 
+This works' intention is about answering the question whether machine learning can be applied to classify a news article as truthful or fake. There are several articles available where Ahmed et al. classified news articles \cite{bib:ahmed-2017} or hotel guest reviews \cite{bib:ahmed-2018} to be truthful or fake. Ahmed et al. used natural language processing (NLP) models to transform text into a structured, mathematical representation and achieved accuracies of 92\% \cite{bib:ahmed-2017}.\\
+
+\noindent Based on a set of features $\{f_{1}, f_{2}, f_{3}, ... \}$ extracted from news articles, a machine learning algorithm needs to be trained to find the relationship $\hat{\theta}$ between the a priori known classifiction of the news articles $y$ ($=0$ for truthful and $=1$ for fake) and the set of extracted features $\{f_{1}, f_{2}, f_{3}, ... \}$. The relation can be written as
+
+\begin{gather}
+\hat{y} =\hat{\theta}(X)
+\end{gather}
+
+\noindent where $\hat{y}$ is the predicted class label by the trained function $\hat{\theta}$ applied to a feature matrix $X$. $\hat{\theta}$ must be trained on available data, such that
+
+\begin{gather}\label{eq:sse}
+\sum_{i=1}^{n} \left(y - \hat{y} \right)^2
+\end{gather}
+
+\noindent is minimal. Here it is assumed that we have $n$ news articles where it is already known whether they are truthful or not. A first step to be worked on in this report is to answer how to extract a feature matrix $X$ from a set of texts (or documents). How reliable is the prediction of class labels on unseen news articles once the function $\hat{\theta}$ has been found.
+
 \subsection{Metrics}
+
+Expression \ref{eq:sse} is rather used for regression problems where the predicted output is a continuous variable. For classification problems like news article classification into a truthful ($= 0$) and a fake class ($= 1$), the accuracy is a better metric. This can be nicely demonstrated by the confusion matrix
+
+\begin{gather}
+\begin{bmatrix}
+& 1 & 0 \\
+1 & \textrm{TP} & \textrm{FP} \\
+0 & \textrm{FN} & \textrm{TN}
+\end{bmatrix}.
+\end{gather}
+
+\noindent The entries in the row indicate predicted classes and the entries in the columns represent the real classes. Furthermore, TP stands for true positives, TN for true negatives, FP for false positives and FN for false negatives. To asses the performance of $\hat{\theta}$, the accuracy $a$ is considered, which can be calculated as
+
+\begin{gather}
+a = \frac{\textrm{TP} + \textrm{TN}}{\textrm{TP} + \textrm{TN} + \textrm{FN} + \textrm{FP}}.
+\end{gather}
 
 \section{Analysis}
 
 \subsection{Algorithms and Techniques}
 
-News articles must be converted into a structured, mathematical representation in order be applied by machine learning techniques. The following chapters disucss how we can convert text into numerical features.
+News articles must be converted into a structured, mathematical representation in order it can be used by machine learning techniques. The following chapters disucss how we can convert text into numerical features.
 
 \subsubsection{n-gram Model}
 
@@ -39,28 +73,28 @@ The $n$-gram is usually defined a contiguous sequence of words with length $n$. 
 
 \subsubsection{Vocabulary}
 
-Consider a corpus $D$ which contains a set of documents $\{d_1, d_2, d_3, ..., d_n\}$. Then a vocubulary $F$ is a set of tokens $\{f_1, f_2, f_3, ..., f_m\}$ extracted from the corpus $D$. Please remind yourself that a token is created based on the n-gram model. Usually for a set of tokens, only the $m$ mostly occuring tokens in a corpus $D$ are considered. In the following, the tokens are denoted as features as these build the features (or independent variables) of a machine learning model.\\
+Consider a corpus $D$ which contains a set of documents $\{d_1, d_2, d_3, ..., d_n\}$. Then a vocubulary $F$ is a set of tokens $\{f_1, f_2, f_3, ..., f_m\}$ extracted from the corpus $D$. Please remind yourself that a token is created based on the n-gram model. Usually for a set of tokens, only the $m$ mostly occuring tokens in a corpus $D$ are considered. In the following, the tokens are denoted as features as these construct the features (or independent variables) of a machine learning model.\\
 
 \subsubsection{Definitions}
 
-Let $\sigma(f_j, d_i)$ denote the number of occurances of feature $f_j$ in document $d_i$. Then a feature matrix $X$ can be built, where
+Let $\sigma(d_i, f_j)$ denote the number of occurances of feature $f_j$ in document $d_i$. Then a feature matrix $S$ can be built, where
 
 \begin{gather}
-X =
+S =
 \begin{bmatrix}
-\sigma(f_1, d_1) & \sigma(f_2, d_1) & \sigma(f_3, d_1) & ... & \sigma(f_m, d_1) \\
-\sigma(f_1, d_2) & \sigma(f_2, d_2) & \sigma(f_3, d_2) & ... & \sigma(f_m, d_2) \\
-\sigma(f_1, d_3) & \sigma(f_2, d_3) & \sigma(f_3, d_3) & ... & \sigma(f_m, d_3) \\
+\sigma(d_1, f_1) & \sigma(d_1, f_2) & \sigma(d_1, f_3) & ... & \sigma(d_1, f_m) \\
+\sigma(d_2, f_1) & \sigma(d_2, f_2) & \sigma(d_2, f_3) & ... & \sigma(d_2, f_m) \\
+\sigma(d_3, f_1) & \sigma(d_3, f_2) & \sigma(d_3, f_3) & ... & \sigma(d_3, f_m) \\
 ... & ... & ... & ... & ... & \\
- \sigma(f_1, d_n) & \sigma(f_2, d_n) & \sigma(f_3, d_n) & ... & \sigma(f_m, d_n)
+ \sigma(d_n, f_1) & \sigma(d_n, f_2) & \sigma(d_n, f_3) & ... & \sigma(d_n, f_m)
 \end{bmatrix}.
 \end{gather}
 
-\noindent An element $\sigma(f_j, d_i)$ in $X$ (representing the document $d_i$ and feature $f_j$) is abbreviated using the notation $\sigma_{ij}$ for simplicity.
+\noindent An element $\sigma(d_i, f_j)$ in matrix $S$ (representing the document $d_i$ and feature $f_j$) is abbreviated using the notation $\sigma_{ij}$ for simplicity.
 
 \subsubsection{Term Frequency Model}
 
-The matrix $X$ could be already used for machine learning. Features usually need to be normalized in machine learning to increase performance. Therefore, the term frequency (TF) model normalizes matrix $X$ to $\hat{X}$. An element $\hat{\sigma}_{ij}$ of $\hat{X}$ is written as
+The matrix $S$ could be already used for machine learning. Features usually need to be normalized in machine learning to increase performance. Therefore, the term frequency (TF) model normalizes matrix $S$ leading to matrix $\hat{S}$. An element $\hat{\sigma}_{ij}$ of matrix $\hat{S}$ is written as
 
 \begin{gather}
 \hat{\sigma}_{ij} = \frac{\sigma_{ij}}{\sum_{j=1}^{m}\sigma_{ij}}.
@@ -70,21 +104,21 @@ The matrix $X$ could be already used for machine learning. Features usually need
 
 \subsubsection{Inverse Document Frequency Model}
 
-The inverse document frequency (IDF) model is used to define the feature importance not just in a document $d_i$ but also compare its importance within a corpus $D$. A matrix $Y$ is introduced, where an element $\delta_{ij}$ of $Y$ is $1$ if $\hat{\sigma}_{ij} > 0$. An inverse normalization is performed on the matrix $Y$ resulting in a vector $\hat{y}$. An element $\hat{\delta}_{j}$ of $\hat{y}$ is
+The inverse document frequency (IDF) model is used to define the feature importance not just in a document $d_i$ but also compare its importance within a corpus $D$. A matrix $E$ is introduced, where an element $\epsilon_{ij}$ of matrix $E$ is $1$ if $\hat{\sigma}_{ij} > 0$ (or $\sigma_{ij} > 0$). An inverse normalization is applied to the matrix $E$ resulting in a vector $\hat{e}$. An element $\hat{\epsilon}_{j}$ of vector $\hat{e}$ is calculated as
 
 \begin{gather}\label{eq:idf}
-\hat{\delta}_{j} = 1 + \textrm{log}\left[\frac{|D|}{\sum_{i=1}^{n}\delta_{ij}}\right].
+\hat{\epsilon}_{j} = 1 + \textrm{log}\left[\frac{|D|}{\sum_{i=1}^{n}\epsilon_{ij}}\right].
 \end{gather}
 
-\noindent Or spoken in plain language: in a corpus $D$ which comprises of a set of documents $\{d_1, d_2, d_3, ..., d_n\}$, its is counted in how many documents the feature $f_j$ appears. This number is used to divide the number of documents $|D|$ in a corpus $D$. Consider two examples: if a feature $f_j$ occurs in each document $\{d_1, d_2, d_3, ..., d_n\}$, we divide the number of documents $|D|$ in a corpus $D$ by the same number. So expression \ref{eq:idf} results in $1$, weighting feature $f_j$ as $1$. On the other hand, if a feature $f_j$ occurs only in one document, expression \ref{eq:idf} produces a much larger number, thus increasing the weight of feature $f_j$ in the corpus $D$.\\
+\noindent Or spoken in plain language: in a corpus $D$ which comprises of a set of documents $\{d_1, d_2, d_3, ..., d_n\}$, it is counted in how many documents the feature $f_j$ appears. This number is used to divide the number of documents $|D|$ in a corpus $D$. Consider two examples: if a feature $f_j$ occurs in each document $\{d_1, d_2, d_3, ..., d_n\}$, we divide the number of documents $|D|$ in a corpus $D$ by the same number. So expression \ref{eq:idf} results in $1$, weighting feature $f_j$ as $1$. On the other hand, if a feature $f_j$ occurs only in one document, expression \ref{eq:idf} produces a much larger number, thus increasing the weight of feature $f_j$ in the corpus $D$.\\
 
-\noindent Finally, a matrix $Z$ is obtained as the element-wise product of the term frequency matrix $\hat{X}$ and the inverse document frequency vector $\hat{y}$ ($Z = \hat{X} \odot \hat{y}$). This is written for an element $z_{ij}$ as
+\noindent Finally, a matrix $\hat{P}$ is obtained as the element-wise product of the term frequency matrix $\hat{S}$ and the inverse document frequency vector $\hat{e}$, written as $\hat{P} = \hat{S} \odot \hat{e}$. For an element $\hat{\pi}_{ij}$ of matrix $\hat{P}$, this is written as
 
 \begin{gather}
-z_{ij} = \hat{\sigma}_{ij} \cdot \hat{\delta}_{j},\;\;\;\textrm{element-wise for j = 1, 2, 3, ..., m}
+\hat{\pi}_{ij} = \hat{\sigma}_{ij} \cdot \hat{\epsilon}_{j},\;\;\textrm{element-wise for}\;j = 1, 2, 3, ..., m .
 \end{gather}
 
-\noindent This is denoted as term frequency inverse document frequency model (TF-IDF).
+\noindent This term is denoted as the term frequency inverse document frequency model (TF-IDF).
 
 \subsection{Data Exploration}
 
@@ -154,13 +188,13 @@ z_{ij} = \hat{\sigma}_{ij} \cdot \hat{\delta}_{j},\;\;\;\textrm{element-wise for
 %\item{Tuning and validation: The test data is used to tune the machine learning hyperparameters and the validation data is used to evaluate the final metrics and to clarify the best modeling strategy.}
 %\end{itemize}
 %
-%\begin{thebibliography}{9}
-%\bibitem{bib:fakenews} Fake news, (2020, December 22), wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
+\begin{thebibliography}{9}
+\bibitem{bib:fakenews} Fake news, (2020, December 30), wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
 %\bibitem{bib:kaggle} Fake and real news dataset, (2020, December 22), kaggle.com, \\\texttt{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}
 %\bibitem{bib:isot} ISOT fake news detection datasets, (2020, December 22), University of Victoria, \texttt{https://www.uvic.ca/engineering/ece/isot/datasets/fake-news/index.php}
-%\bibitem{bib:ahmed-2018} Ahmed, H, Traore, I, Saad, S. Detecting opinion spams and fake news using text classification, Security and Privacy, 2018, \texttt{https://doi.org/10.1001/spy2.9}
-%\bibitem{bib:ahmed-2017} Ahmed H., Traore I., Saad S. (2017) Detection of Online Fake News Using N-Gram Analysis and Machine Learning Techniques. In: Traore I., Woungang I., Awad A. (eds) Intelligent, Secure, and Dependable Systems in Distributed and Cloud Environments. ISDDC 2017. Lecture Notes in Computer Science, vol 10618. Springer, Cham. \texttt{https://doi.org/10.1007/978-3-319-69155-8\_9}
+\bibitem{bib:ahmed-2017} Ahmed H., Traore I., Saad S. (2017) Detection of Online Fake News Using N-Gram Analysis and Machine Learning Techniques. In: Traore I., Woungang I., Awad A. (eds) Intelligent, Secure, and Dependable Systems in Distributed and Cloud Environments. ISDDC 2017. Lecture Notes in Computer Science, vol 10618. Springer, Cham. \texttt{https://doi.org/10.1007/978-3-319-69155-8\_9}
+\bibitem{bib:ahmed-2018} Ahmed, H, Traore, I, Saad, S. Detecting opinion spams and fake news using text classification, Security and Privacy, 2018, \texttt{https://doi.org/10.1001/spy2.9}
 %\bibitem{bib:sagemaker} Amazon SageMaker, (2020, December 22), amazon.com, \\\texttt{https://aws.amazon.com/sagemaker}
-%\end{thebibliography}
+\end{thebibliography}
 
 \end{document}
