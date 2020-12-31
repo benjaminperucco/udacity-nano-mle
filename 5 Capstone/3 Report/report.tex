@@ -131,10 +131,9 @@ A set of truthful and fake news articles is available on kaggle.com \cite{bib:ka
 A first glimpse of the top 20 unigrams per class is given in figure \ref{fig:top20}. Please note that the extracted unigrams are based on the processed text. It can be observed from the unigrams that probably the most discussed topic in the set of news articles is the presidential election in the U.S. during the year 2016. Despite some unigrams that are used frequently in both classes of articles (like said, trump, presid, republican, etc.), we also see distinct unigrams only used in one class of articles.
 
 \begin{figure}[h]
-\caption{Frequency of the top 20 unigrams per class extracted from the corpus.}
 \includegraphics[width=14cm]{output/word_analysis_1.png}
 \centering
-\label{fig:top20}
+\caption{Frequency of the top 20 unigrams per class extracted from the corpus.}\label{fig:top20}
 \end{figure}
 
 \section{Methodology}
@@ -167,88 +166,75 @@ Validation & Model validation & 20\% & $\hat{S}_{\textrm{valid}}$ & $\hat{E}_{\t
 
 \subsubsection{Modeling}
 
-\noindent SageMaker \cite{bib:sagemaker} is used as the training and deployment platform for the machine learning models. The evaluated machine learning models are based on the sci-kit learn framework \cite{bib:scikit-learn}.\\
+\noindent SageMaker \cite{bib:sagemaker} is used as the training and deployment platform for the machine learning models. The evaluated machine learning models are based on the sci-kit learn framework \cite{bib:scikit-learn} because of its simplicity to try out different machine learning models.\\
 
-\noindent The following model k nearest neighbor (knn), support vector machine (svm), logistic regression (log), gradient boosting (gbc) and multilayer perceptron (mlp) are used. Furthermore, the TF and TF-IDF feature extraction methods are applied. The feature size is set to 500, 1000 and 5000 features and unigram or bigrams are used for feature extraction.
+\noindent The following models k nearest neighbor (knn), support vector machine (svm), logistic regression (log), gradient boosting (gbc) and multilayer perceptron (mlp) are used. Furthermore, the TF and TF-IDF feature extraction methods are applied. The feature size is set to 500, 1000 and 5000 features and unigram and bigram are used for feature extraction.
 
 \subsection{Refinement}
 
-Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. In the following, the model hyperparameters as well as its varied ranges are shown. For the hyperparameter search, 20 combinations are evaluted and in total, this results in 1200 models to be trained and tested (5 models x 2 feature extraction methods x 
+Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. For the hyperparameter search, 20 combinations are evaluted and in total this results in 1200 models to be trained and tested (5 models x 2 feature extraction methods x 3 different feature sizes x 2 differnt n-grams x 20 models for hyperparameter tuning). In the following table \ref{tab:hyperparam}, the model hyperparameters as well as its varied ranges are shown. 
 
-\subsubsection*{k nearest neighbor \cite{bib:knn}}
-
+\begin{table}[h]
 \begin{center}
-\begin{tabular}{| l | l | l | l |}
+\begin{tabular}{| l | l | l |}
 \hline
 Parameter & Type & Range \\
 \hline
-n\_neighbors & int & [3, 15] \\
-weight & cat & `'uniform', `distance' \\
+\multicolumn{3}{| c |}{k nearest neighbor \cite{bib:knn}} \\ [.1cm]
+\hline
+n neighbors & int & [3, 15] \\
+weight & cat & 'uniform', 'distance'\\
 p & int & [1, 8] \\
 \hline 
-\end{tabular}
-\end{center}
-
-\subsubsection*{Support vector machine}
-
-\begin{center}
-\begin{tabular}{| l | l | l | l |}
+\multicolumn{3}{| c |}{support vector machine \cite{bib:svm}} \\ [.1cm]
 \hline
-Parameter & Type & Range \\
-\hline
-n\_neighbors & int & [3, 15] \\
-weight & cat & `'uniform', `distance' \\
-p & int & [1, 8] \\
+random state & int & 1 \\
+kernel & cat & `poly' \\
+C & float & [0.001, 3.0] \\
+degree & int & [2, 3] \\
 \hline 
-\end{tabular}
-\end{center}
-
-\subsubsection*{Logistic regression \cite{bib:knn}}
-
-\begin{center}
-\begin{tabular}{| l | l | l | l |}
+\multicolumn{3}{| c |}{logistic regression \cite{bib:log}} \\ [.1cm]
 \hline
-Parameter & Type & Range \\
+max iter & int & 10,000 \\
+C & float & [0.001, 3.0] \\
 \hline
-n\_neighbors & int & [3, 15] \\
-weight & cat & `'uniform', `distance' \\
-p & int & [1, 8] \\
+\multicolumn{3}{| c |}{gradient boosting \cite{bib:gbc}} \\ [.1cm]
+\hline
+random state & int & 1	 \\
+learning rate & float & [0.001, 0.5] \\
+n estimators & int & [100, 1000] \\
+max depth & int & [2, 10] \\
 \hline 
+\multicolumn{3}{| c |}{multilayer perceptron \cite{bib:mlp}} \\ [.1cm]
+\hline
+random state & int & 1	 \\
+learning rate & float & [0.0001, 0.1] \\
+max iter & int & [100, 10000] \\
+activation & cat & 'identity', 'logistic', 'relu', 'tanh' \\
+hidden layer size & int & [2, 10] \\
+start size$^\textrm{1}$ & int & [10, 1000] \\
+end size$^\textrm{1}$ & int & [10, 1000] \\
+\hline
 \end{tabular}
+\caption{$^\textrm{1}$ Note that start and end size are not available as parameters in the multilayer perceptron model in scikit-learn. Based on the hidden layer size and its start and end size, a linear interpoliation is performed for the number of neurons in between in case the hidden layer size is higher than 2.}\label{tab:hyperparam}
 \end{center}
-
-\subsubsection*{Gradient boosting \cite{bib:knn}}
-
-\begin{center}
-\begin{tabular}{| l | l | l | l |}
-\hline
-Parameter & Type & Range \\
-\hline
-n\_neighbors & int & [3, 15] \\
-weight & cat & `'uniform', `distance' \\
-p & int & [1, 8] \\
-\hline 
-\end{tabular}
-\end{center}
-
-\subsubsection*{Multilayer perceptron \cite{bib:knn}}
-
-\begin{center}
-\begin{tabular}{| l | l | l | l |}
-\hline
-Parameter & Type & Range \\
-\hline
-n\_neighbors & int & [3, 15] \\
-weight & cat & `'uniform', `distance' \\
-p & int & [1, 8] \\
-\hline 
-\end{tabular}
-\end{center}
-
+\end{table}
 
 \section{Results}
 
 \subsection{Model Evaluation and Validation}
+
+\subsubsection{Top 5 Accuracy Performance}
+
+\subsubsection{Influence of Parameter Variation}
+
+In total there are 60 parameter variations studied (5 models x 2 feature extraction methods x 3 different feature sizes x 2 differnt n-grams). Per parameter combination, the model is taken which leads in the highest accuracy after hyperparameter tuning. The influence of the different parameters is demonstrated below. In figure \ref{fig:modelperf}, the model performance can be seen for the five machine learning models evaluated. 
+
+\begin{figure}[h]
+\includegraphics[width=14cm]{output/model_performance.png}
+\centering
+\caption{Model performance of five evaluated machine learning models.}\label{fig:modelperf}
+\end{figure}
 
 \subsection{Justification}
 
@@ -311,6 +297,10 @@ p & int & [1, 8] \\
 \bibitem{bib:sagemaker} Amazon SageMaker, December 30, 2020, amazon.com, \\\texttt{https://aws.amazon.com/sagemaker}
 \bibitem{bib:scikit-learn} scikit-learn - machine learning in Python, December 30, 2020, scikit-learn.org, \\\texttt{https://scikit-learn.org/stable}
 \bibitem{bib:knn} scikit-learn - classifier implementing the k-nearest neighbors vote, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.neighbors.KNeighborsClassifier.html}
+\bibitem{bib:svm} scikit-learn - c-support vector classification, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.svm.SVC.html}
+\bibitem{bib:log} scikit-learn - logistic regression classifier, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.linear\_model.LogisticRegression.html}
+\bibitem{bib:gbc} scikit-learn - gradient boosting for classification, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.ensemble.GradientBoostingClassifier.html}
+\bibitem{bib:mlp} scikit-learn - multilayer perceptron classifier, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.neural\_network.MLPClassifier.html}
 \end{thebibliography}
 
 \end{document}
