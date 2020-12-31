@@ -7,7 +7,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{xcolor}
-\usepackage{hyperref}
+%\usepackage{hyperref}
 \usepackage{tocbibind}
 \usepackage{amsmath}
 
@@ -41,7 +41,7 @@ This works' intention is about answering the question whether machine learning c
 
 \subsection{Metrics}
 
-Expression \ref{eq:sse} is rather used for regression problems where the predicted output is a continuous variable. For classification problems like news article classification into a truthful ($= 0$) and a fake class ($= 1$), the accuracy is a better metric. This can be nicely demonstrated by the confusion matrix
+Equation \ref{eq:sse} is rather used for regression problems where the predicted output is a continuous variable. For classification problems like news article classification into a truthful ($= 0$) and a fake class ($= 1$), the accuracy is a better metric. This can be nicely demonstrated by the confusion matrix
 
 \begin{gather}
 \begin{bmatrix}
@@ -53,7 +53,7 @@ Expression \ref{eq:sse} is rather used for regression problems where the predict
 
 \noindent The entries in the row indicate predicted classes and the entries in the columns represent the real classes. Furthermore, TP stands for true positives, TN for true negatives, FP for false positives and FN for false negatives. To asses the performance of $\hat{\theta}$, the accuracy $a$ is considered, which can be calculated as
 
-\begin{gather}
+\begin{gather}\label{eq:acc}
 a = \frac{\textrm{TP} + \textrm{TN}}{\textrm{TP} + \textrm{TN} + \textrm{FN} + \textrm{FP}}.
 \end{gather}
 
@@ -96,7 +96,7 @@ S =
 
 The matrix $S$ could be already used for machine learning. Features usually need to be normalized in machine learning to increase performance. Therefore, the term frequency (TF) model normalizes matrix $S$ leading to matrix $\hat{S}$. An element $\hat{\sigma}_{ij}$ of matrix $\hat{S}$ is written as
 
-\begin{gather}
+\begin{gather}\label{eq:tf}
 \hat{\sigma}_{ij} = \frac{\sigma_{ij}}{\sum_{j=1}^{m}\sigma_{ij}}.
 \end{gather}
 
@@ -110,11 +110,11 @@ The inverse document frequency (IDF) model is used to define the feature importa
 \hat{\epsilon}_{j} = 1 + \textrm{log}\left[\frac{|D|}{\sum_{i=1}^{n}\epsilon_{ij}}\right].
 \end{gather}
 
-\noindent Or spoken in plain language: in a corpus $D$ which comprises of a set of documents $\{d_1, d_2, d_3, ..., d_n\}$, it is counted in how many documents the feature $f_j$ appears. This number is used to divide the number of documents $|D|$ in a corpus $D$. Consider two examples: if a feature $f_j$ occurs in each document $\{d_1, d_2, d_3, ..., d_n\}$, we divide the number of documents $|D|$ in a corpus $D$ by the same number. So expression \ref{eq:idf} results in $1$, weighting feature $f_j$ as $1$. On the other hand, if a feature $f_j$ occurs only in one document, expression \ref{eq:idf} produces a much larger number, thus increasing the weight of feature $f_j$ in the corpus $D$.\\
+\noindent Or spoken in plain language: in a corpus $D$ which comprises of a set of documents $\{d_1, d_2, d_3, ..., d_n\}$, it is counted in how many documents the feature $f_j$ appears. This number is used to divide the number of documents $|D|$ in a corpus $D$. Consider two examples: if a feature $f_j$ occurs in each document $\{d_1, d_2, d_3, ..., d_n\}$, we divide the number of documents $|D|$ in a corpus $D$ by the same number. So equation \ref{eq:idf} results in $1$, weighting feature $f_j$ as $1$. On the other hand, if a feature $f_j$ occurs only in one document, equation \ref{eq:idf} produces a much larger number, thus increasing the weight of feature $f_j$ in the corpus $D$.\\
 
 \noindent Finally, a matrix $\hat{P}$ is obtained as the element-wise product of the term frequency matrix $\hat{S}$ and the inverse document frequency vector $\hat{e}$, written as $\hat{P} = \hat{S} \odot \hat{e}$. For an element $\hat{\pi}_{ij}$ of matrix $\hat{P}$, this is written as
 
-\begin{gather}
+\begin{gather}\label{eq:tf-idf}
 \hat{\pi}_{ij} = \hat{\sigma}_{ij} \cdot \hat{\epsilon}_{j},\;\;\textrm{element-wise for}\;j = 1, 2, 3, ..., m .
 \end{gather}
 
@@ -122,15 +122,129 @@ The inverse document frequency (IDF) model is used to define the feature importa
 
 \subsection{Data Exploration}
 
-\subsection{Benchmark}
+A set of truthful and fake news articles is available on kaggle.com \cite{bib:kaggle}. The data was collected from real world sources. Truthful articles were obtained from Reuters and fake news articles were gathered from unreliable websites that were flagged by Politifact which is a fact-checking organization. These datasets contain different types of articles on different topics, the majority of articles focus on political and world news topics \cite{bib:ahmed-2018}.\\
+
+\noindent There are 44,898 articles in total in the corpus. 21,417 of the articles are classified as truthful and 23,481 are classified as fake, so both class labels are roughly balanced. Approximately 6,169 of the articles are not unique. The duplicates are being removed after text processing discussed in chapter \ref{chap:data-preproc}.
+
+\subsubsection{Visual Analysis of Top Features}
+
+A first glimpse of the top 20 unigrams per class is given in figure \ref{fig:top20}. Please note that the extracted unigrams are based on the processed text. It can be observed from the unigrams that probably the most discussed topic in the set of news articles is the presidential election in the U.S. during the year 2016. Despite some unigrams that are used frequently in both classes of articles (like said, trump, presid, republican, etc.), we also see distinct unigrams only used in one class of articles.
+
+\begin{figure}[h]
+\caption{Frequency of the top 20 unigrams per class extracted from the corpus.}
+\includegraphics[width=14cm]{output/word_analysis_1.png}
+\centering
+\label{fig:top20}
+\end{figure}
 
 \section{Methodology}
 
-\subsection{Data Preprocessing}
+\subsection{Data Preprocessing}\label{chap:data-preproc}
+
+Raw text has to be brought into a clean state in order for feature extraction. Several text cleansing steps are performed like removal of introductory statements, dates, hyperlinks, numbers and stopwords. Finally, so called stemming is performed to end up with the stem of a word (for example cat should identify such strings as cats, catlike, and catty \cite{bib:stemming}).
 
 \subsection{Implementation}
 
+\subsubsection{Feature Extraction Method}
+
+Then the randomized corpus is split into three different datasets as displayed in the table below.
+
+\begin{center}
+\begin{tabular}{| l | l | r | c | c | c |}
+\hline
+Name & Purpose & Size & TF & IDF & TF-IDF \\
+\hline
+Training & Model training & 60\% & $\hat{S}_{\textrm{train}}$ & $\hat{E}_{\textrm{train}}$ & $\hat{S}_{\textrm{train}} \odot \hat{E}_{\textrm{train}}$ \\  
+Test & Hyperparameter tuning & 20\% & $\hat{S}_{\textrm{test}}$ & $\hat{E}_{\textrm{train}}$ & $\hat{S}_{\textrm{test}} \odot \hat{E}_{\textrm{train}}$ \\    
+Validation & Model validation & 20\% & $\hat{S}_{\textrm{valid}}$ & $\hat{E}_{\textrm{train}}$ & $\hat{S}_{\textrm{valid}} \odot \hat{E}_{\textrm{train}}$ \\
+\hline 
+\end{tabular}
+\end{center}
+
+\noindent It is good practise not to use the same data for model training and validation. For hyperparameter tuning a test dataset is used to avoid overfitting.\\
+
+\noindent Term frequency (TF) feature matrices are calculated for each set according to equation \ref{eq:tf}. In comparison, the inverse document frequency (IDF) feature matrix is only calculated for the training set according to equation \ref{eq:idf}. The reason is that the validation and test set should simulate the performance behaviour in case of new unseen data. Therefore,  the IDF feature matrix is estimated on a hypothetical training set and the resulting matrix $\hat{E}_{\textrm{train}}$ is used for the transformation of all sets into the TF-IDF feature space according to equation \ref{eq:tf-idf}. Contrary, the TF feature matrix describes the relative importance of features in a single document. This is independent of other documents in the corpus and therefore, we can derive three matrices $\hat{S}_{\textrm{train}}$, $\hat{S}_{\textrm{test}}$ and $\hat{S}_{\textrm{valid}}$ for the three sets.
+
+\subsubsection{Modeling}
+
+\noindent SageMaker \cite{bib:sagemaker} is used as the training and deployment platform for the machine learning models. The evaluated machine learning models are based on the sci-kit learn framework \cite{bib:scikit-learn}.\\
+
+\noindent The following model k nearest neighbor (knn), support vector machine (svm), logistic regression (log), gradient boosting (gbc) and multilayer perceptron (mlp) are used. Furthermore, the TF and TF-IDF feature extraction methods are applied. The feature size is set to 500, 1000 and 5000 features and unigram or bigrams are used for feature extraction.
+
 \subsection{Refinement}
+
+Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. In the following, the model hyperparameters as well as its varied ranges are shown. For the hyperparameter search, 20 combinations are evaluted and in total, this results in 1200 models to be trained and tested (5 models x 2 feature extraction methods x 
+
+\subsubsection*{k nearest neighbor \cite{bib:knn}}
+
+\begin{center}
+\begin{tabular}{| l | l | l | l |}
+\hline
+Parameter & Type & Range \\
+\hline
+n\_neighbors & int & [3, 15] \\
+weight & cat & `'uniform', `distance' \\
+p & int & [1, 8] \\
+\hline 
+\end{tabular}
+\end{center}
+
+\subsubsection*{Support vector machine}
+
+\begin{center}
+\begin{tabular}{| l | l | l | l |}
+\hline
+Parameter & Type & Range \\
+\hline
+n\_neighbors & int & [3, 15] \\
+weight & cat & `'uniform', `distance' \\
+p & int & [1, 8] \\
+\hline 
+\end{tabular}
+\end{center}
+
+\subsubsection*{Logistic regression \cite{bib:knn}}
+
+\begin{center}
+\begin{tabular}{| l | l | l | l |}
+\hline
+Parameter & Type & Range \\
+\hline
+n\_neighbors & int & [3, 15] \\
+weight & cat & `'uniform', `distance' \\
+p & int & [1, 8] \\
+\hline 
+\end{tabular}
+\end{center}
+
+\subsubsection*{Gradient boosting \cite{bib:knn}}
+
+\begin{center}
+\begin{tabular}{| l | l | l | l |}
+\hline
+Parameter & Type & Range \\
+\hline
+n\_neighbors & int & [3, 15] \\
+weight & cat & `'uniform', `distance' \\
+p & int & [1, 8] \\
+\hline 
+\end{tabular}
+\end{center}
+
+\subsubsection*{Multilayer perceptron \cite{bib:knn}}
+
+\begin{center}
+\begin{tabular}{| l | l | l | l |}
+\hline
+Parameter & Type & Range \\
+\hline
+n\_neighbors & int & [3, 15] \\
+weight & cat & `'uniform', `distance' \\
+p & int & [1, 8] \\
+\hline 
+\end{tabular}
+\end{center}
+
 
 \section{Results}
 
@@ -189,12 +303,14 @@ The inverse document frequency (IDF) model is used to define the feature importa
 %\end{itemize}
 %
 \begin{thebibliography}{9}
-\bibitem{bib:fakenews} Fake news, (2020, December 30), wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
-%\bibitem{bib:kaggle} Fake and real news dataset, (2020, December 22), kaggle.com, \\\texttt{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}
-%\bibitem{bib:isot} ISOT fake news detection datasets, (2020, December 22), University of Victoria, \texttt{https://www.uvic.ca/engineering/ece/isot/datasets/fake-news/index.php}
+\bibitem{bib:fakenews} Fake news, December 30, 2020, wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
 \bibitem{bib:ahmed-2017} Ahmed H., Traore I., Saad S. (2017) Detection of Online Fake News Using N-Gram Analysis and Machine Learning Techniques. In: Traore I., Woungang I., Awad A. (eds) Intelligent, Secure, and Dependable Systems in Distributed and Cloud Environments. ISDDC 2017. Lecture Notes in Computer Science, vol 10618. Springer, Cham. \texttt{https://doi.org/10.1007/978-3-319-69155-8\_9}
 \bibitem{bib:ahmed-2018} Ahmed, H, Traore, I, Saad, S. Detecting opinion spams and fake news using text classification, Security and Privacy, 2018, \texttt{https://doi.org/10.1001/spy2.9}
-%\bibitem{bib:sagemaker} Amazon SageMaker, (2020, December 22), amazon.com, \\\texttt{https://aws.amazon.com/sagemaker}
+\bibitem{bib:kaggle} Fake and real news dataset, December 30, 2020, kaggle.com, \\\texttt{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}
+\bibitem{bib:stemming} Stemming, December 30, 2020, wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Stemming}
+\bibitem{bib:sagemaker} Amazon SageMaker, December 30, 2020, amazon.com, \\\texttt{https://aws.amazon.com/sagemaker}
+\bibitem{bib:scikit-learn} scikit-learn - machine learning in Python, December 30, 2020, scikit-learn.org, \\\texttt{https://scikit-learn.org/stable}
+\bibitem{bib:knn} scikit-learn - classifier implementing the k-nearest neighbors vote, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.neighbors.KNeighborsClassifier.html}
 \end{thebibliography}
 
 \end{document}
