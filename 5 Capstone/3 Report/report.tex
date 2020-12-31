@@ -168,11 +168,11 @@ Validation & Model validation & 20\% & $\hat{S}_{\textrm{valid}}$ & $\hat{E}_{\t
 
 \noindent SageMaker \cite{bib:sagemaker} is used as the training and deployment platform for the machine learning models. The evaluated machine learning models are based on the sci-kit learn framework \cite{bib:scikit-learn} because of its simplicity to try out different machine learning models.\\
 
-\noindent The following models k nearest neighbor (knn), support vector machine (svm), logistic regression (log), gradient boosting (gbc) and multilayer perceptron (mlp) are used. Furthermore, the TF and TF-IDF feature extraction methods are applied. The feature size is set to 500, 1000 and 5000 features and unigram and bigram are used for feature extraction.
+\noindent The following models k nearest neighbor (knn), support vector machine (svm), logistic regression (log), gradient boosting (gbc) and multilayer perceptron (mlp) are used. Furthermore, the TF and TF-IDF feature extraction methods are applied. The feature size is set to 500, 1,000 and 5,000 features and unigram and bigram are used for feature extraction.
 
 \subsection{Refinement}
 
-Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. For the hyperparameter search, 20 combinations are evaluted and in total this results in 1200 models to be trained and tested (5 models x 2 feature extraction methods x 3 different feature sizes x 2 differnt n-grams x 20 models for hyperparameter tuning). In the following table \ref{tab:hyperparam}, the model hyperparameters as well as its varied ranges are shown. 
+Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. For the hyperparameter search, 20 combinations are evaluted and in total this results in 1,200 models to be trained and tested (5 models x 2 feature extraction methods x 3 different feature sizes x 2 differnt n-grams x 20 models for hyperparameter tuning). In the following table \ref{tab:hyperparam}, the model hyperparameters as well as its varied ranges are shown. 
 
 \begin{table}[h]
 \begin{center}
@@ -202,33 +202,34 @@ C & float & [0.001, 3.0] \\
 \hline
 random state & int & 1	 \\
 learning rate & float & [0.001, 0.5] \\
-n estimators & int & [100, 1000] \\
+n estimators & int & [100, 1,000] \\
 max depth & int & [2, 10] \\
 \hline 
 \multicolumn{3}{| c |}{multilayer perceptron \cite{bib:mlp}} \\ [.1cm]
 \hline
 random state & int & 1	 \\
 learning rate & float & [0.0001, 0.1] \\
-max iter & int & [100, 10000] \\
+max iter & int & [100, 10,000] \\
 activation & cat & 'identity', 'logistic', 'relu', 'tanh' \\
 hidden layer size & int & [2, 10] \\
-start size$^\textrm{1}$ & int & [10, 1000] \\
-end size$^\textrm{1}$ & int & [10, 1000] \\
+start size$^\textrm{1}$ & int & [10, 1,000] \\
+end size$^\textrm{1}$ & int & [10, 1,000] \\
 \hline
 \end{tabular}
 \caption{$^\textrm{1}$ Note that start and end size are not available as parameters in the multilayer perceptron model in scikit-learn. Based on the hidden layer size and its start and end size, a linear interpoliation is performed for the number of neurons in between in case the hidden layer size is higher than 2.}\label{tab:hyperparam}
 \end{center}
 \end{table}
 
+\clearpage
 \section{Results}
 
 \subsection{Model Evaluation and Validation}
 
-\subsubsection{Top 5 Accuracy Performance}
+\subsubsection{Top 5 Accuracy Performances}
 
 \subsubsection{Influence of Parameter Variation}
 
-In total there are 60 parameter variations studied (5 models x 2 feature extraction methods x 3 different feature sizes x 2 different n-grams). Per parameter combination, the model is taken which leads in the highest accuracy after hyperparameter tuning. The influence of the different parameters is demonstrated below in figure \ref{fig:influenceparams}.
+In total there are 60 parameter variations studied (5 models x 2 feature extraction methods x 3 different feature sizes x 2 different n-grams). For a parameter combination, the model which leads in the highest accuracy after hyperparameter tuning is chosen. The influence of the different parameters is demonstrated below in figure \ref{fig:influenceparams}.
 
 \begin{figure}[h]
 \begin{center}
@@ -249,10 +250,22 @@ In total there are 60 parameter variations studied (5 models x 2 feature extract
 
 \section{Conclusion}
 
-\subsection{Reflection}
+\subsection{Reflection}\label{chap:reflection}
+
+Machine learning models are able to classify articles into two classes of truthful and fake articles really well. It can be shown that accuracies of 97\% can be achieved. But one has to ask the question what has been the methodology to decide which article is fake and which article is truthful. For example all truthful articles are from Reuters and fake articles were classified by Politifact. Even though this methodology has been consistent for the set of articles analyzed in this work, it does not necessarily mean that new and unseen articles from other sources can be classified equally well by a machine learning model. In my opinion this is one of the remaining question mark and needs to be answered.
 
 \subsection{Improvement}
 
+Further investigations can be done in order to achieve an even better classifiction, or increase training and prediction computation speed:
+
+\begin{itemize}
+\item{With such a large corpus of 44,898 documents, it can be difficult to achieve a text processing that is clean from text not related to the article (hyperlinks, references to twitter accounts, etc.). A second thorough investigation must dive deeper into the news articles to remove any unwanted stuff that remained from the current text processing.}
+\item{The methodology of article classification has to be reviewed and one has to clarify how well the classification performs on completely different sources of news articles (as mentioned in chapter \ref{chap:reflection}).}
+\item{Using a feature size of 5,000 leads to long training computation time. Calculating the correlation between the individual features and focussing on features with low correlation can help to reduce computation cost. Another option is to apply principal component analysis to reduce the number of features.}
+\item{No built-in algorithms of SageMaker, such as XGBoost, are taken into account so far. These algorithms may improve accuracy as well as increse computation speed because they have been optimized by Amazon to handle large datasets.}
+\end{itemize}
+
+\clearpage
 \begin{thebibliography}{9}
 \bibitem{bib:fakenews} Fake news, December 30, 2020, wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
 \bibitem{bib:ahmed-2017} Ahmed H., Traore I., Saad S. (2017) Detection of Online Fake News Using N-Gram Analysis and Machine Learning Techniques. In: Traore I., Woungang I., Awad A. (eds) Intelligent, Secure, and Dependable Systems in Distributed and Cloud Environments. ISDDC 2017. Lecture Notes in Computer Science, vol 10618. Springer, Cham. \texttt{https://doi.org/10.1007/978-3-319-69155-8\_9}
