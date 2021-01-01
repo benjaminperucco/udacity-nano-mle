@@ -15,3 +15,4 @@ Collection of files (Python, datasets, etc.) created during the curriculum:
     - SageMaker deployment project: [plagiarism detector](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/4%20Machine%20Learning%20Case%20Studies/Project)
 - Own test cases
 - Machine learning portfolio project
+    - [Detecting fake news using supervised learning](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5%20Capstone/3%20Report)
