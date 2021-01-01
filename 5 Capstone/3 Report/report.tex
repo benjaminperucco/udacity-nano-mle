@@ -28,13 +28,13 @@
 
 \subsection{Project Overview}
 
-Our world is highly interconnected and it is of paramount importance that citizens are informed objectively about issues that influence and shape our world (like issues on geopolitics or climate change). The internet lead to a rise of news media (e.g. social media, news portals, etc.) to report on these stories. The vast amount of (online) articles available yield a new phenomenon called fake news. Fake news is false or misleading information presented as news and can reduce the impact of real news \cite{bib:fakenews}. 
+Our world is highly interconnected and it is of paramount importance that citizens are informed objectively and truthfully about issues that influence and shape our world (like issues on geopolitics or climate change). The internet lead to a rise of news media (for example social media, news portals, etc.) to report on these stories. The vast amount of (online) news articles available yield a new phenomenon called fake news. Fake news is false or misleading information presented as news and can reduce the impact of real news \cite{bib:fakenews}. 
 
 \subsection{Problem Statement}
 
-This works' intention is about answering the question whether machine learning can be applied to classify a news article as truthful or fake. There are several articles available where Ahmed et al. classified news articles \cite{bib:ahmed-2017} or hotel guest reviews \cite{bib:ahmed-2018} to be truthful or fake. Ahmed et al. used natural language processing (NLP) models to transform text into a structured, mathematical representation and achieved accuracies of 92\% \cite{bib:ahmed-2017}.\\
+This work is about answering the question whether machine learning (ML) can be applied to classify news articles as truthful or fake. There are several papers available where Ahmed et al. classified news articles \cite{bib:ahmed-2017} or hotel guest reviews \cite{bib:ahmed-2018} to be truthful or fake. Ahmed et al. used natural language processing (NLP) models to transform text into a structured, mathematical representation and achieved accuracies up to 92\% \cite{bib:ahmed-2017}.\\
 
-\noindent Based on a set of features $\{f_{1}, f_{2}, f_{3}, ... \}$ extracted from news articles, a machine learning algorithm needs to be trained to find the relationship $\hat{\theta}$ between the a priori known classifiction of the news articles $y$ ($=0$ for truthful and $=1$ for fake) and the set of extracted features $\{f_{1}, f_{2}, f_{3}, ... \}$. The relation can be written as
+\noindent Based on a set of features $\{f_{1}, f_{2}, f_{3}, ... \}$ extracted from news articles, a machine learning algorithm needs to be trained to find the relationship $\hat{\theta}$ between the a priori known classification of the news articles $y$ ($=0$ for truthful and $=1$ for fake) and the set of extracted features $\{f_{1}, f_{2}, f_{3}, ... \}$. The relation can be written as
 
 \begin{gather}
 \hat{y} =\hat{\theta}(X)
@@ -70,7 +70,7 @@ a = \frac{\textrm{TP} + \textrm{TN}}{\textrm{TP} + \textrm{TN} + \textrm{FN} + \
 
 \subsection{Algorithms and Techniques}
 
-News articles must be converted into a structured, mathematical representation in order it can be used by machine learning techniques. The following chapters disucss how we can convert text into numerical features.
+News articles must be converted into a structured, mathematical representation in order it can be used by machine learning techniques. The following chapters discuss how we can convert text into numerical features.
 
 \subsubsection{n-gram Model}
 
@@ -82,11 +82,11 @@ The $n$-gram is usually defined a contiguous sequence of words with length $n$. 
 
 \subsubsection{Vocabulary}
 
-Consider a corpus $D$ which contains a set of documents $\{d_1, d_2, d_3, ..., d_n\}$. Then a vocubulary $F$ is a set of tokens $\{f_1, f_2, f_3, ..., f_m\}$ extracted from the corpus $D$. Please remind yourself that a token is created based on the $n$-gram model. Usually for a set of tokens, only the $m$ mostly occuring tokens in a corpus $D$ are considered. In the following, the tokens are denoted as features as these construct the features (or independent variables) of a machine learning model.\\
+Consider a corpus $D$ which contains a set of documents $\{d_1, d_2, d_3, ..., d_n\}$. Then a vocabulary $F$ is a set of tokens $\{f_1, f_2, f_3, ..., f_m\}$ extracted from the corpus $D$. Please remind yourself that a token is created based on the $n$-gram model. Usually for a set of tokens, only the $m$ mostly occurring tokens in a corpus $D$ are considered. In the following, the tokens are denoted as features as these construct the features (or independent variables) of a machine learning model.\\
 
 \subsubsection{Definitions}
 
-Let $\sigma(d_i, f_j)$ denote the number of occurances of feature $f_j$ in document $d_i$. Then a feature matrix $S$ can be built, where
+Let $\sigma(d_i, f_j)$ denote the number of occurrences of feature $f_j$ in document $d_i$. Then a feature matrix $S$ can be built, where
 
 \begin{gather}
 S =
@@ -109,7 +109,7 @@ The matrix $S$ could be already used for machine learning. Features usually need
 \hat{\sigma}_{ij} = \frac{\sigma_{ij}}{\sum_{j=1}^{m}\sigma_{ij}}.
 \end{gather}
 
-\noindent Or spoken in plain language: the number of occurances of a token $f_j$ in a document $d_i$ is divided by the total number of occurances of all tokens $\{f_1, f_2, f_3, ..., f_m\}$ in the same document $d_i$. So we end up with a representation where the importance of each feature can be compared to other features in the same document.
+\noindent Or spoken in plain language: the number of occurrences of a token $f_j$ in a document $d_i$ is divided by the total number of occurrences of all tokens $\{f_1, f_2, f_3, ..., f_m\}$ in the same document $d_i$. So we end up with a representation where the importance of each feature can be compared to other features in the same document.
 
 \subsubsection{Inverse Document Frequency Model}
 
@@ -131,7 +131,7 @@ The inverse document frequency (IDF) model is used to define the feature importa
 
 \subsection{Data Exploration}
 
-A set of truthful and fake news articles is available on kaggle.com \cite{bib:kaggle}. The data was collected from real world sources. Truthful articles were obtained from Reuters and fake news articles were gathered from unreliable websites that were flagged by Politifact which is a fact-checking organization. These datasets contain different types of articles on different topics, the majority of articles focus on political and world news topics \cite{bib:ahmed-2018}.\\
+A set of truthful and fake news articles is available on kaggle.com \cite{bib:kaggle}. The data was collected from real world sources. Truthful articles were obtained from Reuters and fake news articles were gathered from unreliable websites that were flagged by Politifact which is a fact-checking organization. These data sets contain different types of articles on different topics, the majority of articles focus on political and world news topics \cite{bib:ahmed-2018}.\\
 
 \noindent There are 44,898 articles in total in the corpus. 21,417 of the articles are classified as truthful and 23,481 are classified as fake, so both class labels are roughly balanced. Approximately 6,169 of the articles are not unique. The duplicates are being removed after text processing discussed in chapter \ref{chap:data-preproc}.
 
@@ -149,13 +149,13 @@ A first glimpse of the top 20 unigrams per class is given in figure \ref{fig:top
 
 \subsection{Data Preprocessing}\label{chap:data-preproc}
 
-Raw text has to be brought into a clean state in order for feature extraction. Several text cleansing steps are performed like removal of introductory statements, dates, hyperlinks, numbers and stopwords. Finally, so called stemming is performed to end up with the stem of a word (for example cat should identify such strings as cats, catlike, and catty \cite{bib:stemming}).
+Raw text has to be brought into a clean state in order for feature extraction. Several text cleansing steps are performed like removal of introductory statements, dates, hyperlinks, numbers and stop words. Finally, so called stemming is performed to end up with the stem of a word (for example cat should identify such strings as cats, catlike, and catty \cite{bib:stemming}).
 
 \subsection{Implementation}
 
 \subsubsection{Feature Extraction Method}
 
-Then the randomized corpus is split into three different datasets as displayed in the table \ref{tab:datapreproc} below.
+Then the randomized corpus is split into three different data sets as displayed in the table \ref{tab:datapreproc} below.
 
 \begin{table}[h]
 \begin{center}
@@ -164,7 +164,7 @@ Then the randomized corpus is split into three different datasets as displayed i
 Name & Purpose & Size & TF & IDF & TF-IDF \\
 \hline
 Training & Model training & 60\% & $\hat{S}_{\textrm{train}}$ & $\hat{E}_{\textrm{train}}$ & $\hat{S}_{\textrm{train}} \odot \hat{E}_{\textrm{train}}$ \\  
-Test & Hyperparameter tuning & 20\% & $\hat{S}_{\textrm{test}}$ & $\hat{E}_{\textrm{train}}$ & $\hat{S}_{\textrm{test}} \odot \hat{E}_{\textrm{train}}$ \\    
+Test & Hyper parameter tuning & 20\% & $\hat{S}_{\textrm{test}}$ & $\hat{E}_{\textrm{train}}$ & $\hat{S}_{\textrm{test}} \odot \hat{E}_{\textrm{train}}$ \\    
 Validation & Model validation & 20\% & $\hat{S}_{\textrm{valid}}$ & $\hat{E}_{\textrm{train}}$ & $\hat{S}_{\textrm{valid}} \odot \hat{E}_{\textrm{train}}$ \\
 \hline 
 \end{tabular}
@@ -172,19 +172,19 @@ Validation & Model validation & 20\% & $\hat{S}_{\textrm{valid}}$ & $\hat{E}_{\t
 \caption{Data preprocessing and feature extraction methods applied.}\label{tab:datapreproc}
 \end{table}
 
-\noindent It is good practise not to use the same data for model training and validation. For hyperparameter tuning a test dataset is used to avoid overfitting.\\
+\noindent It is good practice not to use the same data for model training and validation. For hyper parameter tuning a test data set is used to avoid over fitting.\\
 
-\noindent Term frequency (TF) feature matrices are calculated for each set according to equation \ref{eq:tf}. In comparison, the inverse document frequency (IDF) feature matrix is only calculated for the training set according to equation \ref{eq:idf}. The reason is that the validation and test set should simulate the performance behaviour in case of new unseen data. Therefore,  the IDF feature matrix is estimated on a hypothetical training set and the resulting matrix $\hat{E}_{\textrm{train}}$ is used for the transformation of all sets into the TF-IDF feature space according to equation \ref{eq:tf-idf}. Contrary, the TF feature matrix describes the relative importance of features in a single document. This is independent of other documents in the corpus and therefore, we can derive three matrices $\hat{S}_{\textrm{train}}$, $\hat{S}_{\textrm{test}}$ and $\hat{S}_{\textrm{valid}}$ for the three sets.
+\noindent Term frequency (FT) feature matrices are calculated for each set according to equation \ref{eq:tf}. In comparison, the inverse document frequency (IDF) feature matrix is only calculated for the training set according to equation \ref{eq:idf}. The reason is that the validation and test set should simulate the performance behavior in case of new unseen data. Therefore, the IDF feature matrix is estimated on a hypothetical training set and the resulting matrix $\hat{E}_{\textrm{train}}$ is used for the transformation of all sets into the TF-IDF feature space according to equation \ref{eq:tf-idf}. Contrary, the TF feature matrix describes the relative importance of features in a single document. This is independent of other documents in the corpus and therefore, we can derive three matrices $\hat{S}_{\textrm{train}}$, $\hat{S}_{\textrm{test}}$ and $\hat{S}_{\textrm{valid}}$ for the three sets.
 
 \subsubsection{Modeling}
 
 \noindent SageMaker \cite{bib:sagemaker} is used as the training and deployment platform for the machine learning models. The evaluated machine learning models are based on the sci-kit learn framework \cite{bib:scikit-learn} because of its simplicity to try out different machine learning models.\\
 
-\noindent The following models k nearest neighbor (knn), support vector machine (svm), logistic regression (log), gradient boosting (gbc) and multilayer perceptron (mlp) are used. Furthermore, the TF and TF-IDF feature extraction methods are applied. The feature size is set to 500, 1,000 and 5,000 features and unigram and bigram are used for feature extraction.
+\noindent The following models k nearest neighbor (knn), support vector machine (svm), logistic regression (log), gradient boosting (gbc) and multi layer perceptron (mlp) are used. Furthermore, the TF and TF-IDF feature extraction methods are applied. The feature size is set to 500, 1,000 and 5,000 features and unigram and bigram are used for feature extraction.
 
 \subsection{Refinement}
 
-Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. For the hyperparameter search, 20 combinations are evaluted and in total this results in 1,200 models to be trained and tested (5 models $\times$ 2 feature extraction methods $\times$  3 different feature sizes $\times$ 2 differnt $n$-grams $\times$ 20 models for hyperparameter tuning). In the following table \ref{tab:hyperparam}, the model hyperparameters as well as its varied ranges are shown. 
+Hyper parameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyper parameter set is search for which maximizes the accuracy. For the hyper parameter search, 20 combinations are evaluated and in total this results in 1,200 models to be trained and tested (5 models $\times$ 2 feature extraction methods $\times$  3 different feature sizes $\times$ 2 different $n$-grams $\times$ 20 models for hyper parameter tuning). In the following table \ref{tab:hyperparam}, the model hyper parameters as well as its varied ranges are shown. 
 
 \begin{table}[h]
 \begin{center}
@@ -217,7 +217,7 @@ learning rate & float & [0.001, 0.5] \\
 n estimators & int & [100, 1,000] \\
 max depth & int & [2, 10] \\
 \hline 
-\multicolumn{3}{| c |}{multilayer perceptron \cite{bib:mlp}} \\ [.1cm]
+\multicolumn{3}{| c |}{multi layer perceptron \cite{bib:mlp}} \\ [.1cm]
 \hline
 random state & int & 1	 \\
 learning rate & float & [0.0001, 0.1] \\
@@ -228,7 +228,7 @@ start size$^\textrm{1}$ & int & [10, 1,000] \\
 end size$^\textrm{1}$ & int & [10, 1,000] \\
 \hline
 \end{tabular}
-\caption{$^\textrm{1}$ Note that start and end size are not available as parameters in the multilayer perceptron model in scikit-learn. Based on the hidden layer size and its start and end size, a linear interpoliation is performed for the number of neurons in between in case the hidden layer size is higher than 2.}\label{tab:hyperparam}
+\caption{$^\textrm{1}$ Note that start and end size are not available as parameters in the multi layer perceptron model in scikit-learn. Based on the hidden layer size and its start and end size, a linear interpolation is performed for the number of neurons in between in case the hidden layer size is higher than 2.}\label{tab:hyperparam}
 \end{center}
 \end{table}
 
@@ -239,7 +239,7 @@ end size$^\textrm{1}$ & int & [10, 1,000] \\
 
 \subsubsection{Influence of Parameter Variation}
 
-There are 60 parameter variations studied in total using hyperparameter tuning in SageMaker \cite{bib:sagemaker} (5 models $\times$ 2 feature extraction methods $\times$ 3 different feature sizes $\times$ 2 different $n$-grams). The influence of the different parameters is demonstrated below in figure \ref{fig:influenceparams}.
+There are 60 parameter variations studied in total using hyper parameter tuning in SageMaker \cite{bib:sagemaker} (5 models $\times$ 2 feature extraction methods $\times$ 3 different feature sizes $\times$ 2 different $n$-grams). The influence of the different parameters is demonstrated below in figure \ref{fig:influenceparams}.
 
 \begin{figure}[h]
 \begin{center}
@@ -272,7 +272,7 @@ knn & TF-IDF & 5,000 & 1 & 91.27 & 92.07	 \\
 
 \subsubsection{Detailed Results}
 
-Detailed results on achieved accuracies, model hyperparameters and other varied parameters can be found on the \href{https://github.com/benjaminperucco/udacity-nano-mle/blob/master/5%20Capstone/2%20Project/3_postprocessing.ipynb}{Github repository}. 
+Detailed results on achieved accuracies, model hyper parameters and other varied parameters can be found on the \href{https://github.com/benjaminperucco/udacity-nano-mle/blob/master/5%20Capstone/2%20Project/3_postprocessing.ipynb}{Github repository}. 
 
 \subsection{Justification}
 
@@ -287,13 +287,13 @@ Machine learning models are able to classify articles into two classes of truthf
 
 \subsection{Improvement}
 
-Further investigations can be done in order to achieve an even better classifiction, or increase training and prediction computation speed:
+Further investigations can be done in order to achieve an even better classification, or increase training and prediction computation speed:
 
 \begin{itemize}
 \item{With such a large corpus of 44,898 documents, it can be difficult to achieve a text processing that is clean from text not related to the article (hyperlinks, references to twitter accounts, etc.). A second thorough investigation must dive deeper into the news articles to remove any unwanted stuff that remained from the current text processing.}
 \item{The methodology of article classification has to be reviewed and one has to clarify how well the classification performs on completely different sources of news articles (as mentioned in chapter \ref{chap:reflection}).}
-\item{Using a feature size of 5,000 leads to long training computation time. Calculating the correlation between the individual features and focussing on features with low correlation can help to reduce computation cost. Another option is to apply principal component analysis to reduce the number of features.}
-\item{No built-in algorithms of SageMaker \cite{bib:sagemaker}, such as XGBoost, are taken into account so far. These algorithms may improve accuracy as well as increse computation speed because they have been optimized by Amazon to handle large datasets.}
+\item{Using a feature size of 5,000 leads to long training computation time. Calculating the correlation between the individual features and focusing on features with low correlation can help to reduce computation cost. Another option is to apply principal component analysis to reduce the number of features.}
+\item{No built-in algorithms of SageMaker \cite{bib:sagemaker}, such as XGBoost, are taken into account so far. These algorithms may improve accuracy as well as increase computation speed because they have been optimized by Amazon to handle large data sets.}
 \end{itemize}
 
 \clearpage
