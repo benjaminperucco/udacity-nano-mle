@@ -7,9 +7,18 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{xcolor}
-%\usepackage{hyperref}
+\usepackage{hyperref}
 \usepackage{tocbibind}
 \usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{mhchem}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=blue,
+}
 
 \begin{document}
 
@@ -73,7 +82,7 @@ The $n$-gram is usually defined a contiguous sequence of words with length $n$. 
 
 \subsubsection{Vocabulary}
 
-Consider a corpus $D$ which contains a set of documents $\{d_1, d_2, d_3, ..., d_n\}$. Then a vocubulary $F$ is a set of tokens $\{f_1, f_2, f_3, ..., f_m\}$ extracted from the corpus $D$. Please remind yourself that a token is created based on the n-gram model. Usually for a set of tokens, only the $m$ mostly occuring tokens in a corpus $D$ are considered. In the following, the tokens are denoted as features as these construct the features (or independent variables) of a machine learning model.\\
+Consider a corpus $D$ which contains a set of documents $\{d_1, d_2, d_3, ..., d_n\}$. Then a vocubulary $F$ is a set of tokens $\{f_1, f_2, f_3, ..., f_m\}$ extracted from the corpus $D$. Please remind yourself that a token is created based on the $n$-gram model. Usually for a set of tokens, only the $m$ mostly occuring tokens in a corpus $D$ are considered. In the following, the tokens are denoted as features as these construct the features (or independent variables) of a machine learning model.\\
 
 \subsubsection{Definitions}
 
@@ -146,8 +155,9 @@ Raw text has to be brought into a clean state in order for feature extraction. S
 
 \subsubsection{Feature Extraction Method}
 
-Then the randomized corpus is split into three different datasets as displayed in the table below.
+Then the randomized corpus is split into three different datasets as displayed in the table \ref{tab:datapreproc} below.
 
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{| l | l | r | c | c | c |}
 \hline
@@ -159,6 +169,8 @@ Validation & Model validation & 20\% & $\hat{S}_{\textrm{valid}}$ & $\hat{E}_{\t
 \hline 
 \end{tabular}
 \end{center}
+\caption{Data preprocessing and feature extraction methods applied.}\label{tab:datapreproc}
+\end{table}
 
 \noindent It is good practise not to use the same data for model training and validation. For hyperparameter tuning a test dataset is used to avoid overfitting.\\
 
@@ -172,11 +184,11 @@ Validation & Model validation & 20\% & $\hat{S}_{\textrm{valid}}$ & $\hat{E}_{\t
 
 \subsection{Refinement}
 
-Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. For the hyperparameter search, 20 combinations are evaluted and in total this results in 1,200 models to be trained and tested (5 models x 2 feature extraction methods x 3 different feature sizes x 2 differnt n-grams x 20 models for hyperparameter tuning). In the following table \ref{tab:hyperparam}, the model hyperparameters as well as its varied ranges are shown. 
+Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. For the hyperparameter search, 20 combinations are evaluted and in total this results in 1,200 models to be trained and tested (5 models x 2 feature extraction methods x 3 different feature sizes x 2 differnt $n$-grams x 20 models for hyperparameter tuning). In the following table \ref{tab:hyperparam}, the model hyperparameters as well as its varied ranges are shown. 
 
 \begin{table}[h]
 \begin{center}
-\begin{tabular}{| l | l | l |}
+\begin{tabular}{| l | c | l |}
 \hline
 Parameter & Type & Range \\
 \hline
@@ -225,26 +237,45 @@ end size$^\textrm{1}$ & int & [10, 1,000] \\
 
 \subsection{Model Evaluation and Validation}
 
-\subsubsection{Top 5 Accuracy Performances}
-
 \subsubsection{Influence of Parameter Variation}
 
-In total there are 60 parameter variations studied (5 models x 2 feature extraction methods x 3 different feature sizes x 2 different n-grams). For a parameter combination, the model which leads in the highest accuracy after hyperparameter tuning is chosen. The influence of the different parameters is demonstrated below in figure \ref{fig:influenceparams}.
+There are 60 parameter variations studied in total using hyperparameter tuning in SageMaker \cite{bib:sagemaker} (5 models x 2 feature extraction methods x 3 different feature sizes x 2 different $n$-grams). The influence of the different parameters is demonstrated below in figure \ref{fig:influenceparams}.
 
 \begin{figure}[h]
 \begin{center}
 \begin{tabular}{c c}
 \includegraphics[width=8cm]{output/model_performance.png} & \includegraphics[width=8cm]{output/method_performance.png} \\
-\includegraphics[width=8cm]{output/feature_performance.png} & \includegraphics[width=8cm]{output/method_performance.png} \\
-\end{tabular}
-\begin{tabular}{c}
-\includegraphics[width=8cm]{output/ngram_performance.png} \\
+\includegraphics[width=8cm]{output/feature_performance.png} & \includegraphics[width=8cm]{output/ngram_performance.png} \\
 \end{tabular}
 \end{center}
-\caption{The influence on the accuracy of varied models, feature extraction methods, feature sizes and different n-grams is demonstrated.}\label{fig:influenceparams}
+\caption{The influence on the accuracy of varied models, feature extraction methods, feature sizes and different $n$-grams is demonstrated.}\label{fig:influenceparams}
 \end{figure}
 
+\subsubsection{Accuracy Performances}
+
+The parameter combinations leading in the best five accuracy performances are shown in the table \ref{tab:accperf} below.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{| l | l | c | c | c | c |}
+\hline
+Model & Method & Feature & $n$-gram & \thead{Accuracy on \\ test set (\%)} & \thead{Accuracy on \\ validation set (\%)} \\
+\hline
+knn & TF & 5,000 & 1 & 94.83 & 94.94 \\
+knn & TF-IDF & 1,000 & 1 & 93.96 & 94.20 \\
+knn & TF-IDF & 5,000 & 1 & 91.27 & 92.07	 \\
+\hline 
+\end{tabular}
+\end{center}
+\caption{Parameter combinations leading in the best three accuracies.}\label{tab:accperf}
+\end{table}
+
+\subsubsection{Detailed Results}
+
+Detailed results on achieved accuracies, model hyperparameters and other varied parameters can be found on the \href{https://github.com/benjaminperucco/udacity-nano-mle/blob/master/5%20Capstone/2%20Project/3_postprocessing.ipynb}{Github repository}. 
+
 \subsection{Justification}
+
 
 
 
@@ -262,23 +293,23 @@ Further investigations can be done in order to achieve an even better classifict
 \item{With such a large corpus of 44,898 documents, it can be difficult to achieve a text processing that is clean from text not related to the article (hyperlinks, references to twitter accounts, etc.). A second thorough investigation must dive deeper into the news articles to remove any unwanted stuff that remained from the current text processing.}
 \item{The methodology of article classification has to be reviewed and one has to clarify how well the classification performs on completely different sources of news articles (as mentioned in chapter \ref{chap:reflection}).}
 \item{Using a feature size of 5,000 leads to long training computation time. Calculating the correlation between the individual features and focussing on features with low correlation can help to reduce computation cost. Another option is to apply principal component analysis to reduce the number of features.}
-\item{No built-in algorithms of SageMaker, such as XGBoost, are taken into account so far. These algorithms may improve accuracy as well as increse computation speed because they have been optimized by Amazon to handle large datasets.}
+\item{No built-in algorithms of SageMaker \cite{bib:sagemaker}, such as XGBoost, are taken into account so far. These algorithms may improve accuracy as well as increse computation speed because they have been optimized by Amazon to handle large datasets.}
 \end{itemize}
 
 \clearpage
 \begin{thebibliography}{9}
-\bibitem{bib:fakenews} Fake news, December 30, 2020, wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Fake\_news}
-\bibitem{bib:ahmed-2017} Ahmed H., Traore I., Saad S. (2017) Detection of Online Fake News Using N-Gram Analysis and Machine Learning Techniques. In: Traore I., Woungang I., Awad A. (eds) Intelligent, Secure, and Dependable Systems in Distributed and Cloud Environments. ISDDC 2017. Lecture Notes in Computer Science, vol 10618. Springer, Cham. \texttt{https://doi.org/10.1007/978-3-319-69155-8\_9}
-\bibitem{bib:ahmed-2018} Ahmed, H, Traore, I, Saad, S. Detecting opinion spams and fake news using text classification, Security and Privacy, 2018, \texttt{https://doi.org/10.1001/spy2.9}
-\bibitem{bib:kaggle} Fake and real news dataset, December 30, 2020, kaggle.com, \\\texttt{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}
-\bibitem{bib:stemming} Stemming, December 30, 2020, wikipedia.org, \\\texttt{https://en.wikipedia.org/wiki/Stemming}
-\bibitem{bib:sagemaker} Amazon SageMaker, December 30, 2020, amazon.com, \\\texttt{https://aws.amazon.com/sagemaker}
-\bibitem{bib:scikit-learn} scikit-learn - machine learning in Python, December 30, 2020, scikit-learn.org, \\\texttt{https://scikit-learn.org/stable}
-\bibitem{bib:knn} scikit-learn - classifier implementing the k-nearest neighbors vote, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.neighbors.KNeighborsClassifier.html}
-\bibitem{bib:svm} scikit-learn - c-support vector classification, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.svm.SVC.html}
-\bibitem{bib:log} scikit-learn - logistic regression classifier, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.linear\_model.LogisticRegression.html}
-\bibitem{bib:gbc} scikit-learn - gradient boosting for classification, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.ensemble.GradientBoostingClassifier.html}
-\bibitem{bib:mlp} scikit-learn - multilayer perceptron classifier, December 30, 2020, scikit-learn.org, \texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.neural\_network.MLPClassifier.html}
+\bibitem{bib:fakenews} Fake news, December 30, 2020, wikipedia.org, \\\href{https://en.wikipedia.org/wiki/Fake_news}{\texttt{https://en.wikipedia.org/wiki/Fake\_news}}
+\bibitem{bib:ahmed-2017} Ahmed H., Traore I., Saad S. (2017) Detection of Online Fake News Using N-Gram Analysis and Machine Learning Techniques. In: Traore I., Woungang I., Awad A. (eds) Intelligent, Secure, and Dependable Systems in Distributed and Cloud Environments. ISDDC 2017. Lecture Notes in Computer Science, vol 10618. Springer, Cham. \\\href{https://doi.org/10.1007/978-3-319-69155-8_9}{\texttt{https://doi.org/10.1007/978-3-319-69155-8\_9}}
+\bibitem{bib:ahmed-2018} Ahmed, H, Traore, I, Saad, S. Detecting opinion spams and fake news using text classification, Security and Privacy, 2018, \\\href{https://doi.org/10.1001/spy2.9}{\texttt{https://doi.org/10.1001/spy2.9}}
+\bibitem{bib:kaggle} Fake and real news dataset, December 30, 2020, kaggle.com, \\\href{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}{\texttt{https://www.kaggle.com/clmentbisaillon/fake-and-real-news-dataset}}
+\bibitem{bib:stemming} Stemming, December 30, 2020, wikipedia.org, \\\href{https://en.wikipedia.org/wiki/Stemming}{\texttt{https://en.wikipedia.org/wiki/Stemming}}
+\bibitem{bib:sagemaker} Amazon SageMaker, December 30, 2020, amazon.com, \\\href{https://aws.amazon.com/sagemaker}{\texttt{https://aws.amazon.com/sagemaker}}
+\bibitem{bib:scikit-learn} scikit-learn - machine learning in Python, December 30, 2020, scikit-learn.org, \\\href{https://scikit-learn.org/stable}{\texttt{https://scikit-learn.org/stable}}
+\bibitem{bib:knn} scikit-learn - k-nearest neighbors vote classifier, December 30, 2020, scikit-learn.org, \\\href{https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html}{\texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.neighbors.KNeighborsClassifier.html}}
+\bibitem{bib:svm} scikit-learn - c-support vector classification, December 30, 2020, scikit-learn.org, \\\href{https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html}{\texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.svm.SVC.html}}
+\bibitem{bib:log} scikit-learn - logistic regression classifier, December 30, 2020, scikit-learn.org, \\\href{https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html}{\texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.linear\_model.LogisticRegression.html}}
+\bibitem{bib:gbc} scikit-learn - gradient boosting for classification, December 30, 2020, scikit-learn.org, \\\href{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html}{\texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.ensemble.GradientBoostingClassifier.html}}
+\bibitem{bib:mlp} scikit-learn - multilayer perceptron classifier, December 30, 2020, scikit-learn.org, \\\href{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html}{\texttt{https://scikit-learn.org/stable/modules/generated/\\sklearn.neural\_network.MLPClassifier.html}}
 \end{thebibliography}
 
 \end{document}
