@@ -184,7 +184,7 @@ Validation & Model validation & 20\% & $\hat{S}_{\textrm{valid}}$ & $\hat{E}_{\t
 
 \subsection{Refinement}
 
-Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. For the hyperparameter search, 20 combinations are evaluted and in total this results in 1,200 models to be trained and tested (5 models x 2 feature extraction methods x 3 different feature sizes x 2 differnt $n$-grams x 20 models for hyperparameter tuning). In the following table \ref{tab:hyperparam}, the model hyperparameters as well as its varied ranges are shown. 
+Hyperparameter tuning is performed on the training set and tested on the test set according to the accuracy (equation \ref{eq:acc}). A hyperparameter set is search for which maximizes the accuracy. For the hyperparameter search, 20 combinations are evaluted and in total this results in 1,200 models to be trained and tested (5 models $\times$ 2 feature extraction methods $\times$  3 different feature sizes $\times$ 2 differnt $n$-grams $\times$ 20 models for hyperparameter tuning). In the following table \ref{tab:hyperparam}, the model hyperparameters as well as its varied ranges are shown. 
 
 \begin{table}[h]
 \begin{center}
@@ -239,7 +239,7 @@ end size$^\textrm{1}$ & int & [10, 1,000] \\
 
 \subsubsection{Influence of Parameter Variation}
 
-There are 60 parameter variations studied in total using hyperparameter tuning in SageMaker \cite{bib:sagemaker} (5 models x 2 feature extraction methods x 3 different feature sizes x 2 different $n$-grams). The influence of the different parameters is demonstrated below in figure \ref{fig:influenceparams}.
+There are 60 parameter variations studied in total using hyperparameter tuning in SageMaker \cite{bib:sagemaker} (5 models $\times$ 2 feature extraction methods $\times$ 3 different feature sizes $\times$ 2 different $n$-grams). The influence of the different parameters is demonstrated below in figure \ref{fig:influenceparams}.
 
 \begin{figure}[h]
 \begin{center}
