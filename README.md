@@ -1,4 +1,4 @@
-# udacity-nano-mle: Udacity Nanodegree Machine Learning Engineer
+# Udacity Nanodegree Machine Learning Engineer
 
 Collection of files (Python, datasets, jupyter notebooks, reports, etc.) created during the curriculum:
 - Software engineering fundamentals
