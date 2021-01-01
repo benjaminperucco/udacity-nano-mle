@@ -1,2 +1,0 @@
-data,activation,hidden_layer_sizes,max_iter,random_state,learning_rate_init
-tf-idf-5000-5000-1,tanh,"(10, 16, 22, 29, 35, 42, 48, 55)",3548,1,0.006412875021590023

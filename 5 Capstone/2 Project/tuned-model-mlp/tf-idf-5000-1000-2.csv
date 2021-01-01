@@ -1,2 +1,0 @@
-data,activation,hidden_layer_sizes,max_iter,random_state,learning_rate_init
-tf-idf-5000-1000-2,relu,"(186, 116, 46)",100,1,0.006870721769613264
