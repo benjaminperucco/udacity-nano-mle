@@ -222,9 +222,9 @@ mlp \cite{bib:mlp} & \texttt{random state} & int & 1 \\
 & \texttt{activation} & cat & 'relu' \\
 & \texttt{max iter} & int & 1,000 \\
 & \texttt{learning rate} & float & [0.001, 0.1] \\
+& \texttt{start size}$^\textrm{1}$ & int & 125 \\
+& \texttt{end size}$^\textrm{1}$ & int & 2 \\
 & \texttt{hidden layer size} & int & [1, 5] \\
-& \texttt{start size}$^\textrm{1}$ & int & [100, 200] \\
-& \texttt{end size}$^\textrm{1}$ & int & [2, 100] \\
 \hline 
 xgb \cite{bib:xgb} & \texttt{num round} & int & 100 \\
 & \texttt{rate drop} & float & '0.3 \\
@@ -266,11 +266,11 @@ The parameter combinations leading in the best five accuracy performances are sh
 \begin{center}
 \begin{tabular}{| l | l | c | c | c | c |}
 \hline
-Model & Method & Feature & $n$-gram & \thead{Accuracy on \\ test set (\%)} & \thead{Accuracy on \\ validation set (\%)} \\
+Model & Method & Features & $n$-gram & \thead{Accuracy on \\ test set (\%)} & \thead{Accuracy on \\ validation set (\%)} \\
 \hline
-knn & TF & 5,000 & 1 & 94.83 & 94.94 \\
-knn & TF-IDF & 1,000 & 1 & 93.96 & 94.20 \\
-knn & TF-IDF & 5,000 & 1 & 91.27 & 92.07	 \\
+gbc & TF-IDF & 250 & 1 & 96.96 & 97.37 \\
+xgb & TF-IDF & 250 & 1 & 96.80 & 97.24 \\
+gbc & TF & 250 & 1 & 96.78 & 97.15	 \\
 \hline 
 \end{tabular}
 \end{center}
@@ -293,7 +293,7 @@ Except for the knn model, we see very good performances leading to accuracies we
 
 \subsection{Reflection}\label{chap:reflection}
 
-Machine learning models are able to classify articles into two class labels of truthful and fake articles really well. It can be shown that an accuracy of 96\% can be achieved. But one has to ask the question what the methodology has been to decide which article is fake and which article is truthful. For example all truthful articles are from Reuters and fake articles were classified by Politifact. Even though this methodology is consistent for the set of articles analyzed in this work, it does not necessarily mean that new and unseen articles from other sources (others than Reuters for example) can be classified equally well by a machine learning model. This is one of the fundamental remaining question to be answered in a further study.
+Machine learning models are able to classify articles into two class labels of truthful and fake articles really well. It can be shown that an accuracy of 97\% can be achieved. But one has to ask the question what the methodology has been to decide which article is fake and which article is truthful. For example all truthful articles are from Reuters and fake articles were classified by Politifact. Even though this methodology is consistent for the set of articles analyzed in this work, it does not necessarily mean that new and unseen articles from other sources (others than Reuters for example) can be classified equally well by a machine learning model. This is one of the fundamental remaining question to be answered in a further study.
 
 \subsection{Improvement}
 
