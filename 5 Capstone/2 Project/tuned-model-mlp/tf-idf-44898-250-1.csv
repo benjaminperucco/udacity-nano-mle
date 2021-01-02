@@ -1,0 +1,2 @@
+data,activation,hidden_layer_sizes,max_iter,random_state,learning_rate_init
+tf-idf-44898-250-1,relu,"(125, 2)",1000,1,0.0036817699333290296
