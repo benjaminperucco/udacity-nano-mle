@@ -1,0 +1,2 @@
+data,_tuning_objective_metric,alpha,eta,max_depth,min_child_weight,num_round,objective,rate_drop,tweedie_variance_power
+tf-44898-250-2,validation:rmse,0.8588143843585585,0.33641556265701533,10,9.243937001827511,100,binary:logistic,0.3,1.4
