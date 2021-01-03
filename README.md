@@ -15,4 +15,4 @@ Collection of files (Python, datasets, jupyter notebooks, reports, etc.) created
     - [Plagiarism detector](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/4%20Machine%20Learning%20Case%20Studies/Project)
 - Own test cases
 - Machine learning portfolio project
-    - [Detecting fake with using supervised learning](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5%20Capstone/3%20Report)
+    - [Detecting fake news with supervised learning](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5%20Capstone/3%20Report)
