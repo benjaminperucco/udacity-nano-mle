@@ -32,7 +32,7 @@ Our world is highly interconnected and it is of paramount importance that citize
 
 \subsection{Problem Statement}
 
-This work is about answering the question whether machine learning (ML) can be applied to classify news articles as truthful or fake. There are several papers available where Ahmed et al. classified news articles \cite{bib:ahmed-2017} or hotel guest reviews \cite{bib:ahmed-2018} to be truthful or fake. Ahmed et al. used natural language processing (NLP) models to transform text into a structured, mathematical representation and achieved accuracies up to 92\% \cite{bib:ahmed-2017}.\\
+This work is about answering the question whether machine learning (ML) can be applied to classify news articles as truthful or fake. There are several papers available where Hadeer et al. classified news articles \cite{bib:ahmed-2017} or hotel guest reviews \cite{bib:ahmed-2018} to be truthful or fake. Hadeer et al. used natural language processing (NLP) models to transform text into a structured, mathematical representation and achieved accuracies up to 92\% \cite{bib:ahmed-2017}.\\
 
 \noindent Based on a set of features $\{f_{1}, f_{2}, f_{3}, ... \}$ extracted from news articles, a machine learning algorithm needs to be trained to find the relationship $\hat{\theta}$ between the a priori known classification of the news articles $y$ ($=0$ for truthful and $=1$ for fake) and the set of extracted features $\{f_{1}, f_{2}, f_{3}, ... \}$. The relation can be written as
 
@@ -284,7 +284,7 @@ Detailed results on achieved accuracies, model hyper parameters and other varied
 
 \subsection{Justification}
 
-Except for the knn model, we see very good performances leading to accuracies well above 90\%. This is in line with the finding of Ahmed et al. \cite{bib:ahmed-2017}. Even tough a much smaller feature size is used in this study, accuracies are similar or even better (250 vs. $\geq$ 1,000). The tree based models (gradient boosting \cite{bib:gbc} and XGBoost \cite{bib:xgb}) work best and lead to the best three accuracies (see table \ref{tab:accperf}). Ahmed et al. \cite{bib:ahmed-2017} found that a LSVM method is optimal.\\
+Except for the knn model, we see very good performances leading to accuracies well above 90\%. This is in line with the finding of Hadeer et al. \cite{bib:ahmed-2017}. Even tough a much smaller feature size is used in this study, accuracies are similar or even better (250 vs. $\geq$ 1,000). The tree based models (gradient boosting \cite{bib:gbc} and XGBoost \cite{bib:xgb}) work best and lead to the best three accuracies (see table \ref{tab:accperf}). Hadeer et al. \cite{bib:ahmed-2017} found that a LSVM method is optimal.\\
 
 \noindent It can be observed that both feature extraction methods TF and TF-IDF lead to almost equivalent results with a slight advantage for the TF-IDF method. Also, there seems to be almost a tie between the tested feature sizes (125 vs. 250). To save computational ressources, one should choose a feature size as low as practical. Furthermore, a unigram model leads to better results than a bigram model. The difference is quite significant as seen in figure \ref{fig:influenceparams}. 
 
