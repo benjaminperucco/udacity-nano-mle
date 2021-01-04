@@ -16,8 +16,8 @@ Collection of files (Python, datasets, jupyter notebooks, reports, etc.) created
     - [Time series prediction with DeepAR](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/4_machine_learning_case_studies/5_lesson)
     - Featured project: [Plagiarism detector](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/4_machine_learning_case_studies/6_project)
 - [Own test cases](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/6_tests/1_scikit_learn)
-- [Machine learning capstone project](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5%20Capstone)
-    - [Detecting fake news with supervised learning](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5%20Capstone/3%20Report)
+- [Machine learning capstone project](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5_capstone_project)
+    - [Detecting fake news with supervised learning](https://github.com/benjaminperucco/udacity-nano-mle/blob/master/5_capstone_project/3_report/report.pdf)
     
 git repositories (used in the curriculum):
 - [SageMaker deployment](https://github.com/udacity/sagemaker-deployment)
