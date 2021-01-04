@@ -2,7 +2,7 @@
 
 Explanation of directories:
 
-- [0_literature](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5_capstone_project/0_literature): Contains the benchmark literture. 
+- [0_literature](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5_capstone_project/0_literature): Contains the benchmark literature. 
 - [1_proposal](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5_capstone_project/1_proposal): Contains the initial project proposal.
 - [2_project](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5_capstone_project/2_project): Contains the code to produce the results.
 	- [0_download_fake_news_data.ipynb](https://github.com/benjaminperucco/udacity-nano-mle/tree/master/5_capstone_project/2_project/0_download_fake_news_data.ipynb): Downloads the data, performs the text processing and creates a clean csv dataset.
