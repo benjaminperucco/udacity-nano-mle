@@ -23,6 +23,10 @@ git repositories (used in the curriculum):
 - [SageMaker deployment](https://github.com/udacity/sagemaker-deployment)
 - [SageMaker case studies](https://github.com/udacity/ML_SageMaker_Studies)
 
+Other git repositories:
+- [SageMaker examples from Amazon](https://github.com/aws/amazon-sagemaker-examples)
+- [SageMaker examples from VITechLab](https://github.com/VITechLab/aws-sagemaker-examples)
+
 Useful links:
 - [PEP 8 style guide for Python](https://www.python.org/dev/peps/pep-0008)
 - [Udacity git commit message style guide](https://udacity.github.io/git-styleguide)
