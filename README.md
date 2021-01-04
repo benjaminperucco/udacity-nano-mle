@@ -30,5 +30,5 @@ Other git repositories:
 Useful links:
 - [PEP 8 style guide for Python](https://www.python.org/dev/peps/pep-0008)
 - [Udacity git commit message style guide](https://udacity.github.io/git-styleguide)
-- [Report template](https://github.com/udacity/machine-learning/blob/master/projects/capstone/capstone_report_template.md)
+- [Udacity report template](https://github.com/udacity/machine-learning/blob/master/projects/capstone/capstone_report_template.md)
 - [SageMaker documentation](https://sagemaker.readthedocs.io/en/stable/index.html)
