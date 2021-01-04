@@ -1,4 +1,4 @@
-# Capstone Project: Detecting Fake News using Supervised Learning
+# Capstone Project: Detecting Fake News with Supervised Learning
 
 Explanation of directory:
 
